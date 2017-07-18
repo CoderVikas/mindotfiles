@@ -1,0 +1,48 @@
+#!/bin/bash 
+if [ -f ~/.anysh_functions ]; then
+	source ~/.anysh_functions
+fi
+
+DESKTOP='mysite.com'
+
+alias ctags='/usr/local/bin/ctags'
+
+# npm stuff
+alias npm-exec='PATH=$(npm bin):$PATH'
+alias tabset="npm-exec tabset"
+
+# Start Screen with Login Shell using -D -RR - just DO IT
+alias screens="screen -D -RR -s -$SHELL"
+
+# Kick off Key SSH sessions
+alias startssh="ssh-add ~/.ssh/*.pem"
+alias starttps="ssh-add ~/.ssh/*.cer"
+
+# Desktop Stuff 
+alias dsk="ssh ${DESKTOP}"
+alias cpfromdsk="scp ${DESKTOP}"
+function cptodsk() {
+    scp $1 ${DESKTOP}:$2
+}
+function cpdirtodsk() {
+   scp -r $1 ${DESKTOP}:$2
+}
+alias dskA="ssh -A ${DESKTOP}"
+
+alias tmux='env SHELL=/usr/local/bin/zsh tmux'
+alias mux=tmuxinator
+alias fix='reset; stty sane; tput rs1; clear; echo -e "\033c"'
+
+# Build Stuff
+
+# normal aliases
+alias lh='ls -d .*'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -al'
+alias llr='ls -altr'
+alias rm='rm -i'
+alias cp='cp -i'
+alias cp='cp -i'
+alias c='clear'
+alias ssh='TERM=xterm-256color ssh'

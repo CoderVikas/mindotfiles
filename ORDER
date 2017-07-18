@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+pushd install
+source setup.sh
+# install xcode minimum etc
+popd
+
+# bootstrap submodules (one time) - then git commit them so next time they are
+# not needed
+source bootstrap_submodules
+
+# now main install
+source install.sh
+
+# later - isolated and incremental changes
+pushd install
+source link.sh
+source brew.sh
+popd

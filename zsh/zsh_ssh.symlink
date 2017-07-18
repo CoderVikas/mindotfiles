@@ -1,0 +1,111 @@
+# SSH Agent Configuration
+SSH_ENV="$HOME/.ssh/agent-config"
+ 
+# Starts a new agent if SSH_AUTH_SOCKET is not set or incorrect.
+function configureSshAgent {
+    if [[ -n "$SSH_AUTH_SOCK" ]] && [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+        echo "Current socket $SSH_AUTH_SOCK seems dead - cleaning"
+        unset SSH_AUTH_SOCK
+    fi
+ 
+    if [[ -z "$SSH_AUTH_SOCK" ]]; then
+        echo "Initialising new SSH agent..."
+        /usr/bin/ssh-agent > $SSH_ENV
+        chmod 600 "${SSH_ENV}"
+        . "${SSH_ENV}" > /dev/null
+    fi
+}
+ 
+# Sources SSH_ENV if SSH_AUTH_SOCK is not a valid socket, then configure the agent and add the local keys
+function initSshAgent {
+    if [[ -z "$SSH_AUTH_SOCK" ]] || [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+        if [[ -f "$SSH_ENV" ]]; then
+            . $SSH_ENV > /dev/null
+        fi
+    fi
+ 
+    configureSshAgent
+ 
+    # Now, add the local keys to the agent - even if the agent is running remotely
+ 
+    # First, figure out what are the keys already known by the agent. We don't
+    # wan't to add them again, as that would ask for the passphrase for every
+    # new session
+    knownKeys=`mktemp`
+    ssh-add -l | awk '{print $3}' | grep `whoami`/.ssh/ | sort > $knownKeys
+ 
+    # Figure out what keys are present locally. First, the default key locations
+    # (cf. man ssh-add)
+    localKeys=`mktemp`
+    # If your keys live in non standard location, add them here. That way, if
+    # you have a passphrase on them, this function won't ask you for it at every new session
+    ls ~/.ssh/id_rsa ~/.ssh/id_dsa ~/.ssh/identity 2>/dev/null | tr -s ' ' '\n' | sort > $localKeys
+ 
+    for key in $(comm -23 $localKeys $knownKeys); do
+        ssh-add $key
+    done
+ 
+    rm $knownKeys $localKeys
+}
+ 
+# Run this command from any shell if the current socket is dead (agent died or disconnected)
+initSshAgent
+ 
+# Exports the current agent to SSH_ENV, so that other sessions can pick it up
+function exportSshAgent {
+    if [[ -n "$SSH_AUTH_SOCK" ]]; then
+        if [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+            echo "Current socket $SSH_AUTH_SOCK is dead - aborting"
+            return 1;
+        fi
+ 
+        echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK; export SSH_AUTH_SOCK;" > $SSH_ENV
+        echo "Exported SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+ 
+        if [[ -n "$SSH_AGENT_PID" ]]; then
+            echo "export SSH_AGENT_PID=$SSH_AGENT_PID; export SSH_AGENT_PID;" >> $SSH_ENV
+            echo "Exported SSH_AGENT_PID=$SSH_AGENT_PID"
+        fi
+ 
+        echo "\nTo use this agent in already opened SSH sessions, run importSshAgent"
+        echo "New sessions will automatically pick up this agent"
+    else
+        echo "SSH_AUTH_SOCK not set - aborting"
+    fi
+}
+ 
+# Imports an SSH agent from SSH_ENV (typically, one that has been exported through exportSshAgent)
+function importSshAgent {
+    oldAgentSocket=$SSH_AUTH_SOCK
+    oldAgentPid=$SSH_AGENT_PID
+ 
+    if [[ -f "$SSH_ENV" ]]; then
+        unset SSH_AGENT_PID
+        unset SSH_AUTH_SOCK
+        . $SSH_ENV > /dev/null
+        if [[ -z "$SSH_AUTH_SOCK" ]] || [[ ! -S "$SSH_AUTH_SOCK" ]] ; then
+            echo "Socket $SSH_AUTH_SOCK is dead - aborting"
+            SSH_AUTH_SOCK=$oldAgentSocket; export SSH_AUTH_SOCK
+            SSH_AGENT_PID=$oldAgentPid; export SSH_AGENT_PID
+            return 1
+        fi
+    else
+        echo "No agent to import from $SSH_ENV"
+        return 1;
+    fi
+ 
+    if [[ -n "$oldAgentPid" ]] && [[ "$oldAgentPid" -ne "$SSH_AGENT_PID" ]]; then
+        echo "Leaving previous agent running - PID $oldAgentPid ; SOCK $oldAgentSocket - kill it if unused"
+    fi
+ 
+    echo "Agent imported:"
+    echo "\tSSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+    echo "\tSSH_AGENT_PID=$SSH_AGENT_PID"
+}
+ 
+# It is safe to have multiple agents running - but you can invoke this function to have a fresh start
+# Note: that may affect other running SSH sessions
+function killSshAgents {
+    rm $SSH_ENV 2>/dev/null
+    ps aux | grep "ssh-agent" | grep -v grep | awk '{print $2}' | xargs kill 2>/dev/null
+}

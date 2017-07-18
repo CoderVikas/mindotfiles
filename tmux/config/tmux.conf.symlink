@@ -1,0 +1,340 @@
+# https://github.com/rothgar/awesome-tmux#plugins
+# tools pending
+# tmux-mem-cpu-load
+# tmux-fingers
+
+##############################
+### Tmux Basic Settings ###
+##############################
+
+# set Zsh as your default Tmux shell
+set-option -g default-shell /usr/local/bin/zsh
+
+# with xterm-256color the vim background color 
+# for any theme other than solarized is
+# horrible
+# set -g default-terminal 'xterm-256color'
+set -g default-terminal 'tmux-256color'
+
+# notes: http://superuser.com/questions/399296/256-color-support-for-vim-background-in-tmux
+# https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
+# echo `tput sitm`italics`tput ritm`
+# printf "\e[3;4;33mthis is a test\n\e[0m"
+# bold()          { ansi 1 "$@"; }
+# italic()        { ansi 3 "$@"; }
+# underline()     { ansi 4 "$@"; }
+# strikethrough() { ansi 9 "$@"; }
+# red()           { ansi 31 "$@"; }
+# ansi()          { echo -e "\e[${1}m${*:2}\e[0m"; }
+
+
+# new test between Hyper and Iterm2
+#setw -g aggressive-resize on
+# should this be off for hyperterm to work ?
+
+# removed in tmux > 2.2
+# set -g UTF-8
+# set-window-option -g UTF-8 on
+
+##############################
+### Color & Style Settings ###
+##############################
+
+#run-shell "powerline-daemon -q"
+#source ~/.tmux/config/powerline.conf
+
+# Activity Monitoring
+setw -g monitor-activity off
+set -g visual-activity off
+
+# tile all pane
+# prefix M - 5
+# cycle through pane
+# prefix o
+
+# Make shift+arrows, ctrl+arrows etc work in Vim.
+set -g xterm-keys on
+
+##############################
+### Basic Control Keys ###
+##############################
+
+# Tmux uses a 'control key', let's set it to 'Ctrl-a'
+set -g prefix C-a
+unbind C-b
+
+# nested C-a
+bind C-a send-prefix
+
+# command delay? We don't want that, make it short
+set -sg escape-time 1
+
+# Enable mouse mode (tmux 2.1 and above)
+# set -g mouse on
+# above disable scrolling using mouse
+# also select and copy does not work either
+# http://superuser.com/questions/209437/how-do-i-scroll-in-tmux
+#
+# set easier-to-read status bar (at least on dark bg)
+set -g status-bg black
+set -g status-fg white
+
+# highlight active window
+set-window-option -g window-status-current-bg green
+set-window-option -g window-status-current-fg black
+#? set-window-option -g window-status-current-bg red
+
+#set-option -g status on
+#set-option -g status-interval 2
+#set-option -g status-justify "centre"
+set-option -g status-left-length 60
+set-option -g status-right-length 90
+
+##############################
+### Detailed Key Bindings  ###
+##############################
+
+# Reload our tmux configuration while using tmux
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+# symbols to split the screen
+# bind | split-window -h
+# bind - split-window -v
+# Add the following lines in ~/.tmux.conf to automatically open new windows and tabs in the directory from where you opened them:
+
+# New window with default path set to last path
+bind \ split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# split full window (tmux-2.3+)
+bind | split-window -fh -c "#{pane_current_path}"
+bind _ split-window -fv -c "#{pane_current_path}"
+
+# bind c new-window -c "#{pane_current_path}"
+# don't want above for new window
+unbind '"'
+unbind %
+
+# fast pane switching
+# switch panes using Alt-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+
+# nisi's
+# Buffers to/from Mac clipboard, yay tmux book from pragprog
+# bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
+# I did not use C-c as my 'y' works well.
+# bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
+# command-v works well. I did not set C-v to do this
+#
+# confirm keys in tmux command prompt with following
+# :list-keys -t vi-copy
+#
+
+# enable mouse mode one more time but enable wheel scrolling
+# directly
+set -g mouse on
+
+# these two will restore the sideeffect of mouse on
+#bind-key -t vi-copy WheelUpPane scroll-up
+#bind-key -t vi-copy WheelDownPane scroll-down
+# search below for more overrides
+
+# Remove the annoying scroll over the status bar to change windows.
+unbind-key -n WheelUpStatus
+unbind-key -n WheelDownStatus
+
+# See also tmux-scroll-copy-mode plugin below
+unbind b
+bind-key -r b last-window  # For "back". Default is 'l' for "last".
+
+# pane movement
+unbind h
+unbind l
+bind-key h command-prompt -p "join pane from:"  "join-pane -s '%%'"
+bind-key l command-prompt -p "send pane to:"  "join-pane -t '%%'"
+# http://unix.stackexchange.com/questions/14300/moving-tmux-pane-to-window
+
+# Max scrollback for an int16. I'm not sure if this is actually the max
+# possible, but it's pretty huge and I saw this online somewhere else.
+set-option -g history-limit 32768
+
+# AWESOME key command prefix+P to save all the scrollback history to a file.
+bind-key O command-prompt -p 'save scrollback history to filename:' 'capture-pane -S -32768 ; save-buffer %1 ; delete-buffer'
+# Same as above but with a default value for filename.
+#bind-key P command-prompt -p 'save scrollback history to filename:' -I '~/tmux-pane.scrollback' 'capture-pane -S -32768 ; save-buffer %1 ; delete-buffer'
+
+
+# set vi mode for copy mode
+set-window-option -g mode-keys vi
+# more settings to make copy-mode more vim-like
+# unbind [
+bind Escape copy-mode
+# Escape was not bound to anything. Now prefix [ and prefix Escape both can
+# start tmux copy mode
+
+# p maps to previous window by default
+# where else can we map previous window to ??
+# hjkl ?
+# P is used for tmux logging
+# Shift arrows left and right along with prefix ?
+# Shift arrow to switch windows
+# -n means no need to send prefix sequence fist
+# but these binding conflict with vim's next word binding
+# which one to keep ?
+# bind -n S-Left  previous-window
+# bind -n S-Right next-window
+# to reverse after comment:
+# unbind -n S-Left
+# unbind -n S-Right
+
+# not sure what is right shortcut to switch windows.
+# mouse scrolling in status bar is too fast.
+# j for previous window (may repeat)
+# k for next window (may repeat)
+unbind j
+unbind k
+bind -r j previous-window
+bind -r k next-window
+
+# these two conflict with two vim in tmux running from sharing their
+# yank default buffers
+#bind -r C-j select-window -t :-
+#bind -r C-k select-window -t :+
+# my C-h is empty and C-l is for sending clear
+
+# resize panes like vim
+#unbind <
+#unbind >
+#unbind -
+#unbind +
+#bind -r < resize-pane -L 2
+#bind -r > resize-pane -R 2
+#bind -r - resize-pane -D 2
+#bind -r + resize-pane -U 2
+# Resize pane shortcuts
+bind -r H resize-pane -L 10
+bind -r J resize-pane -D 10
+bind -r K resize-pane -U 10
+bind -r L resize-pane -R 10
+
+
+# so many repeatable keys
+# allow 1.5 seconds for repeat to be effective
+set-option -g repeat-time 1500
+
+# choices P for paste
+# or bind-key -r [
+# -r allows us to repeat [ without prefix again
+unbind p
+# unbind ]
+bind p paste-buffer
+bind -t vi-copy 'v' begin-selection
+bind -t vi-copy 'r' rectangle-toggle
+# my 'y' is for copy to clipboard and tmux buffer
+
+# to try - my 'y' and selection are same - this is another shortcut
+# to both but this work outside of copy mode as well
+# Buffers to/from Mac clipboard, yay tmux book from pragprog
+bind C-c run "tmux save-buffer - | pbcopy"
+# bind C-v run "tmux set-buffer $(pbpaste); tmux paste-buffer"
+# above was bad for meta-character getting pasted. below is better.
+bind C-v run "pbpaste | tmux load-buffer - && tmux paste-buffer"
+
+# this is same meaning as for bind ] run "pbpaste | tmux load-buffer - && tmux paste-buffer"
+
+
+# special use of ]
+unbind ]
+bind ] run "pbpaste | tmux load-buffer - && tmux paste-buffer"
+
+# my 'y' is already bound
+# also bind Enter
+# Update default binding of `Enter` to also use copy-pipe
+unbind -t vi-copy Enter
+bind-key -t vi-copy Enter copy-pipe "pbcopy"
+
+# lets try this also
+bind-key -t vi-copy MouseDragEnd1Pane copy-pipe "pbcopy"
+
+# nisi's
+bind-key -T root PPage if-shell -F "#{alternate_on}" "send-keys PPage" "copy-mode -e; send-keys PPage"
+bind-key -t vi-copy PPage page-up
+bind-key -t vi-copy NPage page-down
+
+bind-key -t vi-copy WheelUpPane halfpage-up
+bind-key -t vi-copy WheelDownPane halfpage-down
+
+# root binding - to try
+
+bind -T root WheelUpPane if-shell -F -t = "#{alternate_on}" "select-pane -t =; send-keys -M" "select-pane -t =; copy-mode -e; send-keys -M"
+bind -T root WheelDownPane if-shell -F -t = "#{alternate_on}" "select-pane -t =; send-keys -M" "select-pane -t =; send-keys -M"
+
+# cycle through panes
+unbind o
+bind -r o select-pane -t:.+
+
+# bind -t vi-copy 'y' copy-selection
+# i have a better binding with copy-pipe :
+# See here:
+# http://apple.stackexchange.com/questions/208387/copy-to-clipboard-from-tmux-in-el-capitan
+# Actually, i was wrong when stating that copy-pipe does not work. It does, and copy-selection is then superfluous, as copy-pipe both copies text to Tmux pasteboard and pipes to an arbitrary shell command. So the following line works:
+# bind-key -t vi-copy 'y' copy-pipe "pbcopy"
+# However, one needs to press y before releasing the mouse button. I've stumbled across this in the documentation for tmux-yank plugin:
+# "When making a selection using tmux mode-mouse on or mode-mouse copy-mode, you cannot rely on the default 'release mouse after selection to copy' behavior. Instead, press y before releasing mouse."
+
+
+# this will give following functionality
+# prefix,Escape   # enter copy mode
+# move cursor to the start or end of the desired text string
+# v                        # to activate highlighting
+# move cursor to cover the requisite string
+# y                        # to capture the string
+# q                        # exit copy mode
+# prefix,p       # put/paste the text in the desired location
+
+
+###################################
+### Window Naming and Numbering ###
+###################################
+
+# Set the numbering of windows to go from
+# 1 instead of 0 - silly programmers :|
+set-option -g base-index 1
+setw -g pane-base-index 1
+# automatically renumber tmux windows
+set -g renumber-windows on
+
+
+# full screen X and opposite Y
+bind X new-window -d -n fullscreen \; swap-pane -s fullscreen.1 \; select-window -t fullscreen
+bind Z last-window \; swap-pane -s fullscreen.1 \; kill-window -t fullscreen
+# nisi did following way:
+# # maximizing and restoring windows
+# unbind Up
+# bind Up new-window -d -n fullscreen \; swap-pane -s fullscreen.1 \; select-window -t fullscreen
+# unbind Down
+# bind Down last-window \; swap-pane -s fullscreen.1 \; kill-window -t fullscreen
+
+
+# toggle on and off
+# bind -n C-x set-window-option synchronize-panes
+bind C-x set-window-option synchronize-panes
+
+# C-l to shell for clear screen
+bind C-l send-keys 'C-l'
+
+# config status-right
+# set -g status-right '#{battery_status_bg} Batt: #{battery_icon} #{battery_percentage} #{battery_remain} #(/Users/yadvika/node_modules/.bin/tmux-mem)#(powerline tmux right)'
+#--set -g status-right '#{prefix_highlight} #(/Users/yadvika/node_modules/.bin/tmux-mem) #{battery_status_bg} #{battery_icon} #{battery_percentage} #{battery_remain} #(powerline tmux right)'
+
+# must be the last line in this conf file
+source ~/.tmux/config/tmux-plugins.conf
+
+# hyperterm sake
+#setw -g aggressive-resize off
+#set main-pane-width 160
+source ~/.tmux/config/theme.sh

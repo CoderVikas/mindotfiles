@@ -1,0 +1,102 @@
+
+# History Management Stuff for
+# ~/.bash_history
+# ~/.bash_eternal_history
+
+# Only prepare history stuff for interactive shells
+# note that export is not needed as every shell would
+# load ~/.bashrc
+
+mybash_eternal_history_catch() {
+	CURRENT_HISTORY="$(history 1)"
+	if [[ $CURRENT_HISTORY =~ ".bash_eternal_history" ]]; then
+		return;
+	fi
+	CURRENT_HISTORY_STRIP=$(echo ${CURRENT_HISTORY} | sed -e 's/^[ \t]*//;s/[ \t]*$//')
+	if [[ ! -z $CURRENT_HISTORY_STRIP ]] && [[ !("${CURRENT_HISTORY_STRIP}" =~ "${LAST_LINE_SAVED}") ]]; then 
+		echo $$ $USER "${CURRENT_HISTORY_STRIP}" >> ~/.bash_eternal_history;
+		LAST_LINE_SAVED="$CURRENT_HISTORY_STRIP";
+	fi
+}
+	
+mybash_history_sync() {
+	# Step #1 - append to HISTFILE
+	if [[ ! -z "$SHELL_SESSION_HISTFILE_RELOAD_PENDING" ]]; then
+		builtin history -c
+		builtin history -r $SHELL_SESSION_HISTFILE
+		unset SHELL_SESSION_HISTFILE_RELOAD_PENDING
+	else
+		builtin history -a
+	fi
+	
+	if [[ ! ($PROMPT_COMMAND =~ "mybash_eternal_history_catch") ]]; then
+		# following would tralsated to
+		# history -a; echo $$ $USER "$(history 1)" >> ~/.bash_eternal_history
+
+		# save_last_line
+		# PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }"'if [[ !("$(history 1)" =~ "$LAST_LINE_SAVED") && $LAST_LINE_SAVED ]]; then echo $$ $USER "$(history 1)" >> ~/.bash_eternal_history; LAST_LINE_SAVED="$(history 1)"; else LAST_LINE_SAVED="$(history 1)"; fi'
+		PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }"'mybash_eternal_history_catch'
+  	fi 
+}
+
+
+# Common Options with Bash Session Used by Mac and My Scripts 
+if  [ 1 == 1 ]; then
+	ONETHOUSAND=1000
+	TENTHOUSAND=10000
+	HUNDREDTHOUSAND=100000
+	ONEMILLON=1000000
+
+	# We will be appending to history file so filesize is larger than what in-memory history remebers
+	HISTSIZE=$TENTHOUSAND    # big history
+	HISTFILESIZE=$HUNDREDTHOUSAND  # big history
+
+
+	# ignore dup of previous command, ignore command starting with space, erase duplicate
+	# from incore history list. This will not erase duplicates from already written down
+	# history. Use my custom hist.py script to clean duplicates from history 
+
+	HISTCONTROL=ignoreboth:erasedups  # no duplicate entries
+
+	HISTIGNORE=ls:ll:"ls -alt":"ls -al":"ls -alt":"ls -altr":la:l:c:clear:cd:pwd:exit:mc:df:clear:c:ps:h:history:cd:"history -c":"history -a":"history -r":"source ~/.bashrc":"source ~/.bash_aliases":exit:top:"cd ..":"cd -":"cd ../..":"cd \~":[bf]g:
+	HISTIGNORE=${HISTIGNORE}:"source ~/.bash_aliases":"source ~/.bashrc":bash:dev:devA
+	# Above may be too aggressive. Full matching commands seperated by colon. These are not prefix - but full commands.
+	# Not that up/down keys can't be used as these will not be saved in history
+
+	## Very Temp Solution
+	if [[ -z $PROMPT_COMMAND ]]; then 
+		PROMPT_COMMAND='mybash_eternal_history_catch'
+	else
+		PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }"'mybash_eternal_history_catch'
+	fi
+fi
+
+
+if  [ 1 == 1 ]; then
+	# History Related Stuff
+	# hints from http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+
+	# These options will conflict with mac's bash session stuff.
+	# Enable append to history file
+	shopt -s histappend                      # append to history, don't overwrite it
+	# This above will disable per session history file.
+	# Enable it by force.
+	SHELL_SESSION_HISTORY=1
+
+	# Enabling History TimeStamps
+	HISTTIMEFORMAT="%F-T%T%zutc%t"
+
+	if [[ ! ($PROMPT_COMMAND =~ "mybash_history_sync") ]]; then
+		if [[ -z $PROMPT_COMMAND ]]; then 
+			PROMPT_COMMAND='mybash_history_sync'
+		else
+			#PROMPT_COMMAND="mybash_history_sync; $PROMPT_COMMAND"
+			PROMPT_COMMAND="${PROMPT_COMMAND:+mybash_history_sync; $PROMPT_COMMAND}"
+		fi
+	
+		# Save and reload the history after each command finishes
+		# PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+		# NOTE: I am not doing append, clear and reload cycle. Looking at other shell's history live
+		# in current shell is not needed for my personal needs
+	fi
+fi

@@ -1,0 +1,46 @@
+# How to Debug
+# ssh -vvv <rest of ssh options and arguments>
+
+# Notes:
+# 1. For Heavy Throughput turn Compression OFF
+
+# GSSAPIAuthentication : https://coderwall.com/p/fukoew/speed-up-ssh-logon-by-disabling-gssapiauthentication
+# KeepAlive : https://andy.wordpress.com/2010/06/14/my-ssh-config-setup/
+
+## With border (prod) dns name:
+Host *.foo.bar
+    ProxyCommand ssh -e none -qxT bastion-`echo %h | sed -e 's/.*-\([^-]*-.\)\..*/\1/' -e 's/z-/z/' -e 's/-1$//'`.foo.bar.com -W `echo %h | sed -e 's/-\([a-z]\{1,\}[0-9]\{1,\}-1\)\.[a-z]\{1,\}\.foo.bar/\.\1.foo.baz/' -e 's/-\(z-[0-9]\)\.[a-z]\{1,\}\.foo.bar/\.\1.bing.ting/'`:22
+
+## With substrate name
+Host *.bing.ting *.foo.baz
+    ProxyCommand ssh -e none -qxT bastion-`echo %h | awk -F. '{print $(NF-2)}' | sed -e 's/z-/z/' -e 's/-1$//'`.foo.com -W %h:22
+
+# Git and Desktop
+# Kerberos is needed
+Host *git*.foo.com 
+        GSSAPIAuthentication yes
+        ProxyCommand none
+
+################
+# Global SSH Options
+################
+Host *
+   # Banner Suppress
+   LogLevel QUIET
+   StrictHostKeyChecking no
+   GSSAPIAuthentication no
+   GSSAPIDelegateCredentials no
+   user yadav
+   TCPKeepAlive yes
+   ForwardAgent yes
+   HashKnownHosts yes
+   UserKnownHostsFile=/dev/null
+   ServerAliveInterval 10
+   # Do not kill connection if route is down temporarily.
+   TCPKeepAlive no
+   # Allow ten minutes down time before giving up the connection.
+   ServerAliveCountMax 30
+   ServerAliveInterval 20
+   # Conserve bandwith. (Compression is off by default.)
+   Compression yes
+   # ForwardAgent line is equivalent to running ssh -A

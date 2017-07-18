@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -x
+
+PACKAGE_CACHE_PATH=$HOME/pkg-cache
+PACKAGE_CACHE_SPARSEBUNDLE=pkg-cache
+WORKPLACE_PATH=$HOME/code
+WORKPLACE_SPARSEBUNDLE=code
+DISK_IMAGE_PATH="$HOME/Disk-Images"
+
+IMAGE_NAME=""
+
+log() {
+    echo "$IMAGE_NAME ::: $*"
+}
+
+clone_image() {
+    local source_path="$1"; shift
+    local dest_path="$1"; shift
+    log "Syncing $source_path and$dest_path; this may take some time..."
+    rsync -rap "${source_path}"/ "$dest_path"
+    log "Done."
+
+}
+
+build_image() {
+    local image_name="$1"; shift
+    local image_size=$1; shift
+    hdiutil create -size $image_size -type SPARSEBUNDLE -nospotlight \
+	    -volname "$image_name" -layout GPTSPUD \
+	    -fs 'Case-sensitive Journaled HFS+' "${DISK_IMAGE_PATH}/${image_name}"
+    log "Created a sparse image for $image_name at ${DISK_IMAGE_PATH}/${image_name}"
+}
+
+volume_path() {
+    local image_name="$1"; shift
+    vol_path=$(
+        hdiutil info | \
+            awk -F' : ' '/image-path/ { image_path= $2 }; /\/dev\/disk/ {printf "%s\t%s\n", image_path, $1}' | \
+            grep "$image_name" | \
+            grep Volumes | \
+            awk -F/Volumes/ '{print $2}'
+            )
+    if [[ -z $vol_path ]]; then
+        return 1
+    else
+        echo /Volumes/$vol_path
+    fi
+}
+
+create_launch() {
+    local image_name="$1"; shift
+    local source_path="$1"; shift
+    local plist_file="/Library/LaunchDaemons/com.yadav.bt.mount.${image_name}.plist"
+    sudo launchctl unload "$plist_file"
+
+    log "Creating a LaunchDaemon plist file at $plist_file"
+    temp_file=`mktemp /tmp/com.yadav.bt.mount.${image_name}.plist.XXXX`
+    cat<<EOF>$temp_file
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.yadav.bt.mount.${image_name}</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>hdiutil</string>
+		<string>attach</string>
+		<string>-mountpoint</string>
+		<string>${source_path}</string>
+		<string>${DISK_IMAGE_PATH}/${image_name}.sparsebundle</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+</dict>
+</plist>
+EOF
+
+    sudo cp -v $temp_file "$plist_file"
+    sudo chmod 644 "$plist_file"
+    rm -v $temp_file
+    sudo launchctl unload "$plist_file"
+    sudo launchctl load "$plist_file"
+    sleep 60
+    sudo launchctl unload "$plist_file"
+    sleep 60
+    sudo launchctl load "$plist_file"
+}
+
+create_migrate() {
+    local image_name="$1"; shift
+    local image_size=$1; shift
+    local source_path="$1"; shift
+
+    IMAGE_NAME=$image_name
+
+    if [ ! -d "$DISK_IMAGE_PATH/$image_name.sparsebundle" ]; then
+        build_image "$image_name" $image_size
+    fi
+
+    if ! volume_path "$image_name"; then
+	open "$DISK_IMAGE_PATH/$image_name.sparsebundle"
+        sleep 2
+    fi
+
+    dest_path=`volume_path "$image_name"`
+    mdutil -s "$dest_path"
+
+    clone_image "$source_path" "$dest_path"
+    umount "$dest_path"
+
+    # move the old path aside
+    mv -v ${source_path} ${source_path}.bak
+
+    # try a mount
+    hdiutil attach -mountpoint "${source_path}" "${DISK_IMAGE_PATH}/${image_name}.sparsebundle"
+    mdutil -s "${source_path}"
+    umount "${source_path}"
+
+    # okay, that worked; let's make it happen at boot time
+    create_launch "$image_name" "$source_path"
+}
+
+echo "This script will request root permissions for some activities"
+
+#create_migrate ${WORKPLACE_SPARSEBUNDLE} 20g $HOME/${WORKPLACE_SPARSEBUNDLE}
+create_migrate ${PACKAGE_CACHE_SPARSEBUNDLE} 40g $HOME/${PACKAGE_CACHE_SPARSEBUNDLE}
+
+

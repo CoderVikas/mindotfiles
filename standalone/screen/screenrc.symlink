@@ -1,0 +1,7 @@
+logfile /Users/yadvika/screenlogs/screen_%Y-%m-%d-%c:%s_%n.log
+deflog on
+logtstamp on
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%w"

@@ -1,0 +1,9 @@
+
+tell application "Keychain Access"
+	activate
+end tell
+tell application "System Events"
+	keystroke "," using command down
+end tell
+# other examples
+# keystroke "e" using {command down, option down, control down}

@@ -1,0 +1,51 @@
+# This file contains common bash and zsh variable to initialize when startig a new shell 
+
+# SSH Agent related stuff:
+AGENT_SOCKET=$HOME/.ssh/.ssh-agent-socket
+AGENT_INFO=$HOME/.ssh/.ssh-agent-info
+if [[ -s "$AGENT_INFO" ]]
+then
+    source $AGENT_INFO
+fi
+
+if [[ -z "$SSH_AGENT_PID" || "$SSH_AGENT_PID" != `pgrep -u $USER ssh-agent` ]]; then
+    # echo "Re-starting Agent for $USER"
+    pkill -15 -u $USER ssh-agent
+    eval `ssh-agent -s -a $AGENT_SOCKET`
+    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > $AGENT_INFO
+    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $AGENT_INFO
+    ssh-add ~/.ssh/*.cer
+    ssh-add ~/.ssh/*.pem
+fi
+
+# Every new login shell - print what ssh keys are loaded
+# By default no keys are loaded - until I do start* aliases
+# and enable those keys manually. Later I can disable these
+# from ssh-add (agent)
+ssh-add -l > /dev/null
+
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="/usr/local/share/python/:$PATH"
+# eclim
+export PATH="$PATH:/Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.6.0/bin"
+
+# ruby
+eval "$(rbenv init -)"
+
+# npm
+#mkdir -p "${HOME}/.npm-packages"
+NPM_PACKAGES="${HOME}/.npm-packages"
+export PATH="$NPM_PACKAGES/bin:$PATH"
+export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
+# color not working yet
+# export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH" 
+# colors from internet - nothing else to do in bash
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacad
+# Or use
+# GxFxCxDxBxegedabagaced
+#export LSCOLORS=GxFxCxDxBxegedabagaced
+# Bold did not work. Trying non-bold version
+export LSCOLORS=gxfxcxdxbxegedabagaced

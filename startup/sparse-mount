@@ -1,0 +1,26 @@
+#!/usr/bin/env bash -e
+
+set -e
+set -u
+for debugging
+set -x
+
+DISK_IMAGE_PATH="$HOME/Disk-Images"
+PACKAGE_CACHE_SPARSEBUNDLE=pkg-cache
+WORKPLACE_SPARSEBUNDLE=code
+
+mount_at_trigger() {
+    local image_name="$1"; shift
+    source_path=$HOME/$image_name
+   
+    # Check existing states
+    if ! -d $source_path"; then
+	hdiutil attach -mountpoint $source_path "${DISK_IMAGE_PATH}/${image_name}.sparsebundle"
+    else 
+	echo "Already mounted"
+	return 0
+    fi
+    mdutil -s "$source_path"
+}
+mount_at_trigger ${WORKPLACE_SPARSEBUNDLE}
+mount_at_trigger ${PACKAGE_CACHE_SPARSEBUNDLE}

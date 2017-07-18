@@ -1,0 +1,20 @@
+#Useful bash or zsh functions
+
+## Color Related Functions
+# See list of all colors in my term
+function terminal_show_all_foreground_colors() {
+	for C in {0..255}; do
+    		tput setab $C
+    		echo -n "$C "
+	done
+	tput sgr0
+	echo
+}
+function terminal_show_all_background_colors() {
+	for C in {0..255}; do
+    		tput setaf $C
+    		echo -n "$C "
+	done
+	tput sgr0
+	echo
+}

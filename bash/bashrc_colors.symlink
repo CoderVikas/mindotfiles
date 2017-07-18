@@ -1,0 +1,59 @@
+# Enable My Terminal Colors for Each Interactive Shell
+# 1 == 1 is for true.
+if  [ 1 == 1 ]; then
+	export PS1FORMAT='[\u@\h '$ITERM_SESSION_ID_PREFIX' \W]'
+	# Mac Default
+	# PS1='\h:\W \u\$ '
+	# Default
+	#PS1='[\u@\h \W]\$ ‘  # Default
+
+	# https://wiki.archlinux.org/index.php/Bash/Prompt_customization#Prompts
+
+	# man terminfo
+	# Color       #define       Value       RGB
+	# black     COLOR_BLACK       0     0, 0, 0
+	# red       COLOR_RED         1     max,0,0
+	# green     COLOR_GREEN       2     0,max,0
+	# yellow    COLOR_YELLOW      3     max,max,0
+	# blue      COLOR_BLUE        4     0,0,max
+	# magenta   COLOR_MAGENTA     5     max,0,max
+	# cyan      COLOR_CYAN        6     0,max,max
+	# white     COLOR_WHITE       7     max,max,max
+
+	BLACK="\[$(tput setaf 0)\]"
+	RED="\[$(tput setaf 1)\]"
+	GREEN="\[$(tput setaf 2)\]"
+	YELLOW="\[$(tput setaf 3)\]"
+	BLUE="\[$(tput setaf 4)\]"
+	MAGENTA="\[$(tput setaf 5)\]"
+	CYAN="\[$(tput setaf 6)\]"
+	WHITE="\[$(tput setaf 7)\]"
+
+	RESET="\[$(tput sgr0)\]"
+
+	# Green
+	# PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
+	# Easier way
+	PS1="${GREEN}${PS1FORMAT}${RESET}> "
+
+	# Red 
+	# PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\] '
+	# Easier way
+	# PS1="${RED}[\u@\h \W]${RESET}> "
+	#
+
+	# Yellow
+	#PS1="${YELLOW}${PS1FORMAT}${RESET}> "
+	
+	# I like 19 color in above
+	#MYBLUE="\[$(tput setaf 19)\]"
+	#PS1="${MYBLUE}${PS1FORMAT}${RESET}> "
+
+	alias switchprompt='PS1="${GREEN}[\u@\h \W]${RESET}> "'
+
+	# Or Switch to oh-my-zsh
+	# https://github.com/robbyrussell/oh-my-zsh
+
+	# Or try bash-it
+	# https://github.com/Bash-it/bash-it
+fi

@@ -1,0 +1,9 @@
+call plug#begin('~/.vim/bundle')
+Plug 'nonlogicaldev/vim-jasmine-colortheme'
+Plug 'ajh17/spacegray.vim'
+Plug 'jacoborus/tender'
+Plug 'chriskempson/tomorrow-theme'
+Plug 'chriskempson/base16-vim'
+call plug#end()
+set background=dark
+colo tender 
