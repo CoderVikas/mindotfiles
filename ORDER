@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
-pushd install
-source setup.sh
-# install xcode minimum etc
-popd
+
+if [ -e $HOME/.gmac_setup_done ]; then
+	echo "gMac setup is done - proceeding"
+else
+	echo "first do gMac setup"
+	exit 0
+fi
+
+echo "AppleScript Run"
+install/scripts/lock.scpt
+install/scripts/modifier.scpt
 
 # bootstrap submodules (one time) - then git commit them so next time they are
 # not needed

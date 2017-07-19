@@ -1,11 +1,11 @@
-#!/bin/bash 
+#!/usr/bin/env bash 
 if [ -f ~/.anysh_functions ]; then
 	source ~/.anysh_functions
 fi
 
-DESKTOP='mysite.com'
+DESKTOP=`echo $HOME/.dsk-name`
 
-alias ctags='/usr/local/bin/ctags'
+# alias ctags='/usr/local/bin/ctags'
 
 # npm stuff
 alias npm-exec='PATH=$(npm bin):$PATH'
@@ -15,8 +15,8 @@ alias tabset="npm-exec tabset"
 alias screens="screen -D -RR -s -$SHELL"
 
 # Kick off Key SSH sessions
-alias startssh="ssh-add ~/.ssh/*.pem"
-alias starttps="ssh-add ~/.ssh/*.cer"
+# alias startssh="ssh-add ~/.ssh/*.pem"
+# alias starttps="ssh-add ~/.ssh/*.cer"
 
 # Desktop Stuff 
 alias dsk="ssh ${DESKTOP}"
@@ -29,7 +29,7 @@ function cpdirtodsk() {
 }
 alias dskA="ssh -A ${DESKTOP}"
 
-alias tmux='env SHELL=/usr/local/bin/zsh tmux'
+# alias tmux='env SHELL=/usr/local/bin/zsh tmux'
 alias mux=tmuxinator
 alias fix='reset; stty sane; tput rs1; clear; echo -e "\033c"'
 

@@ -1,22 +1,21 @@
 # This file contains common bash and zsh variable to initialize when startig a new shell 
 
 # SSH Agent related stuff:
-AGENT_SOCKET=$HOME/.ssh/.ssh-agent-socket
-AGENT_INFO=$HOME/.ssh/.ssh-agent-info
-if [[ -s "$AGENT_INFO" ]]
-then
-    source $AGENT_INFO
-fi
+# AGENT_SOCKET=$HOME/.ssh/.ssh-agent-socket
+# AGENT_INFO=$HOME/.ssh/.ssh-agent-info
+# if [[ -s "$AGENT_INFO" ]]
+# then
+#     source $AGENT_INFO
+# fi
 
-if [[ -z "$SSH_AGENT_PID" || "$SSH_AGENT_PID" != `pgrep -u $USER ssh-agent` ]]; then
-    # echo "Re-starting Agent for $USER"
-    pkill -15 -u $USER ssh-agent
-    eval `ssh-agent -s -a $AGENT_SOCKET`
-    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > $AGENT_INFO
-    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $AGENT_INFO
-    ssh-add ~/.ssh/*.cer
-    ssh-add ~/.ssh/*.pem
-fi
+# if [[ -z "$SSH_AGENT_PID" || "$SSH_AGENT_PID" != `pgrep -u $USER ssh-agent` ]]; then
+#     # echo "Re-starting Agent for $USER"
+#     pkill -15 -u $USER ssh-agent
+#     eval `ssh-agent -s -a $AGENT_SOCKET`
+#     echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > $AGENT_INFO
+#     echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $AGENT_INFO
+#     ssh-add
+# fi
 
 # Every new login shell - print what ssh keys are loaded
 # By default no keys are loaded - until I do start* aliases
@@ -24,14 +23,17 @@ fi
 # from ssh-add (agent)
 ssh-add -l > /dev/null
 
+# Use Sublime Text as the default editor.
+#export EDITOR="subl -w"
+export EDITOR="vim"
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/usr/local/share/python/:$PATH"
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH="/usr/local/share/python/:$PATH"
 # eclim
-export PATH="$PATH:/Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.6.0/bin"
+# export PATH="$PATH:/Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.6.0/bin"
 
 # ruby
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 # npm
 #mkdir -p "${HOME}/.npm-packages"

@@ -7,8 +7,9 @@
 ### Tmux Basic Settings ###
 ##############################
 
-# set Zsh as your default Tmux shell
-set-option -g default-shell /usr/local/bin/zsh
+# set ZSH as your default Tmux shell
+# set-option -g default-shell $HOME/homebrew/bin/zsh
+set-option -g default-shell $SHELL
 
 # with xterm-256color the vim background color 
 # for any theme other than solarized is

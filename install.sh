@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-mkdir ~/.ssh
-sudo -v
+mkdir -p ~/.ssh
+export PATH=$HOME/homebrew/bin:$PATH
 
 echo "Installing dotfiles."
 
@@ -21,11 +21,11 @@ if [ "$(uname)" == "Darwin" ]; then
     echo -e "\n\nRunning on OSX"
     pushd install
     ./brew.sh
-    ./npm.sh
+    ##./npm.sh
     ./pip.sh
-    ./osx-iterm2.sh
+    ./macos/osx/osx-iterm2.sh
+	#./macos/osx/osx.sh - untested yet
     popd
-    #./osx.sh - untested yet
 fi
 
 if ! command_exists zsh; then

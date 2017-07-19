@@ -11,9 +11,9 @@ if ! is_executable ruby -o ! is_executable curl -o ! is_executable git; then
 fi
 
 if [ ! -d $HOME/homebrew ]; then
-    mkdir $HOME/homebrew
+    mkdir -p $HOME/homebrew
 fi
-#### PATH
+export PATH=$HOME/homebrew/bin:$PATH
 
 #sudo chown $(whoami):admin $HOME/homebrew 
 
@@ -27,6 +27,9 @@ if ! is_executable brew; then
   exit 0
 fi
 
+brew update
+rm -rf $HOME/homebrew/share/doc/homebrew
+brew update
 # brew cask
 brew tap caskroom/cask
 brew tap caskroom/fonts    
@@ -44,11 +47,11 @@ echo "=============================="
 formulas=(
 	cscope
 	ctags
-	#python
-	gcc
-	readline
-	xz
-	imagemagick
+	python
+	#gcc
+	#readline
+	#xz
+	#imagemagick
 )
 
 for formula in "${formulas[@]}"; do
@@ -61,12 +64,12 @@ for formula in "${formulas[@]}"; do
 done
 
 formulas=(
-	grep
-	screen	
-	gnu-sed
-	gnu-indent
-	gnu-tar
-	gawk
+	#grep
+	#screen	
+	#gnu-sed
+	#gnu-indent
+	#gnu-tar
+	#gawk
 	findutils
 	coreutils
 	moreutils
@@ -74,29 +77,30 @@ formulas=(
 	z
 	zsh-completions
 	zsh-syntax-highlighting
-	#'macvim --with-cscope'
-	tmux
-	battery
+	'macvim --with-override-system-vim'
+	#tmux
+	#battery
 	# reattach-to-user-namespace
-	graphviz
+	#graphviz
 	diff-so-fancy
 	fzf
 	tree
 	# highlight
-	awscli
-	kubectl
+	#awscli
+	#kubectl
 	grpc
 	'go --cross-compile-common'
-	aws-shell
+	#aws-shell
 	ack
 	the_silver_searcher
 	rename
 	wget
+	urlview
 	psgrep
 	checkstyle
 	watch
 	htop
-	pandoc
+	#pandoc
 	maven
 	ant
 	app-engine-java-sdk
@@ -117,7 +121,7 @@ brew cask search chrome
 cask_formulas=(
 	atom
 	flux
-	macdown
+	#macdown
 	font-menlo-for-powerline
 	font-firacode-nerd-font
 	font-firacode-nerd-font-mono

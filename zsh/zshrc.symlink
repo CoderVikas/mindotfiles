@@ -251,7 +251,6 @@ source $ZSH/oh-my-zsh.sh
 #}
 #PROMPT='%{%f%b%k%}$(build_prompt) '
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -279,3 +278,8 @@ export CLICOLOR=1
 # Setup CDPATH
 # What does CDPATH in shell do ? common cdpaths ?
 source ~/.zsh_alias_active
+# binaries installed via Homebrew in our PATH
+export PATH="$HOME/homebrew/bin:$PATH"
+export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
+export fpath=("$(brew --prefix)"/share/zsh-completions $fpath)
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

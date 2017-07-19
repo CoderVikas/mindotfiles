@@ -14,6 +14,8 @@ Install
 This is specific to my environment, written specifically to restore my
 environment.
 
+Read ORDER file and cleanup special case and make it single command install
+
 Checkout this package and run install.sh. Since the restore will be rarely
 executed I would need some tweaks after this to get my dev environment
 restored to the way it was in my DevDesktop earlier.
