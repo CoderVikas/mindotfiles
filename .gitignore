@@ -1,0 +1,34 @@
+# custom files
+# config
+# !config/nvim
+# !config/git
+# !config/powerline
+
+# temp files directories
+cache/
+log/
+
+# directory where unused stuff will go
+notused/
+
+.netrwhist
+npm-debug.log
+
+plug.vim.old
+
+config/nvim/spell
+config/nvim/shada
+config/nvim/plugged
+config/nvim/bundle
+config/nvim/autoload/plug.vim
+
+# ignore most of stuff under vim
+vim/vim.symlink/autoload/plug.vim
+vim/vim.symlink/plugged
+vim/vim.symlink/bundle
+vim/vim.symlink/spell/
+vim/vim.symlink/localhistory
+vim/vim.symlink/undodir
+vim/vim.symlink/vim-tmp
+vim/vim.symlink/viminfo
+tmux/plugins
