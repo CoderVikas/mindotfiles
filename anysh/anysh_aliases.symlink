@@ -3,7 +3,7 @@ if [ -f ~/.anysh_functions ]; then
 	source ~/.anysh_functions
 fi
 
-DESKTOP=`echo $HOME/.dsk-name`
+DESKTOP=`cat $HOME/.dsk-name`
 
 # alias ctags='/usr/local/bin/ctags'
 
