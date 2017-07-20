@@ -17,37 +17,37 @@
     let mybackupDir = expand(vimDir . '/vim-tmp/backup')
     let myswapDir = expand(vimDir . '/vim-tmp/swap')
     let mylocalhistDir = expand(vimDir . '/localhistory')
-    let myviminfodir = expand(vimDir . '/viminfo')
+    let myviminfoDir = expand(vimDir . '/viminfo')
 
-    " create dirs if not created already
-    call system('mkdir -p ' . vimdir)
-    call system('mkdir -p ' . myundodir)
-    call system('mkdir -p ' . mybackupdir)
-    call system('mkdir -p ' . myswapdir)
-    call system('mkdir -p ' . mylocalhistdir)
-    call system('mkdir -p ' . myviminfodir)
+    " Create dirs if not created already
+    call system('mkdir -p ' . vimDir)
+    call system('mkdir -p ' . myundoDir)
+    call system('mkdir -p ' . mybackupDir)
+    call system('mkdir -p ' . myswapDir)
+    call system('mkdir -p ' . mylocalhistDir)
+    call system('mkdir -p ' . myviminfoDir)
 
     " simply backup and swaps
     set backup
     set writebackup
-    let &backupdir= mybackupdir . '//'
+    let &backupdir= mybackupDir . '//'
     set backupdir+=~/.vim-tmp/backup,~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
     " swap files
-    let &directory= myswapdir . '//'
+    let &directory= myswapDir . '//'
     set directory+=~/.vim-tmp/swaps,~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
-    " persistant undo
+    " Persistant Undo
     if has('persistent_undo')
-        let &undodir = myundodir . '//'
+        let &undodir = myundoDir . '//'
         set undofile
     endif
-    set undolevels=1000            " how many undos
+    set undolevels=1000            " How many undos
     set undoreload=10000           " number of lines to save for undo
 
     " ! - store global variable which are store ready
     " % - restore the buffer list (only for vim without file arguments)
-    " ' - number of files to remember marks for:
+    " ' - Number of files to remember marks for:
     " n - viminfo filepath (previously was ~/.viminfo):
     set viminfo^=!,%,'1000
     set viminfo+=n~/.vim/viminfo/viminfo
@@ -55,20 +55,20 @@
 
 " }}}
 
-" bells and visualbells {{{
+" Bells and VisualBells {{{
     set noerrorbells
     set visualbell
     set t_vb=
     set tm=500
 " }}}
 
-" terminal, encoding, mouse {{{
+" Terminal, Encoding, Mouse {{{
     set ttyfast                     " not tested yet: faster redrawing
-    set encoding=utf-8              " encoding used in buffers, registers, strings in expressions etc
-    setglobal fileencoding=utf-8    " encoding used for writing files.
+    set encoding=utf-8              " Encoding used in buffers, registers, strings in expressions etc
+    setglobal fileencoding=utf-8    " Encoding used for writing files.
     "set fileencodings=ucs-bom,utf-8,default,latin1 "known file encodings for auto detection
     set termencoding=utf-8          " terminal encoding
-    set lazyredraw                  " don't update the display while executing macros
+    set lazyredraw                  " Don't update the display while executing macros
     if has('mouse')
     set mouse=a
     if has("mouse_sgr")
@@ -79,30 +79,30 @@
     end
     set title                       " set terminal title
     set laststatus=2                " always display the statusline in all windows using 2 lines
-    set showtabline=2               " always display the tabline, even if there is only one tab
+    set showtabline=2               " Always display the tabline, even if there is only one tab
     set fillchars+=stl:\ ,stlnc:\   " for powerline ssbar
     set cmdheight=2                 " command bar height
     set showcmd                     " show typed command in ss bar
-    set noshowmode                  " hide the default mode text (e.g. -- insert -- below the ssline)
+    set noshowmode                  " Hide the default mode text (e.g. -- INSERT -- below the ssline)
 " }}}
 
 set confirm                     " get a dialog when :q, :w, or :wq fails
 set hidden                      " remember undo after quitting; allow editing in multiple buffers
 set esckeys                     " map missed escape sequences (enables keypad keys)
 set magic                       " change the way backslashes are used in search patterns
-set bs=indent,eol,start         " allow backspacing over everything in insert mode
+set bs=indent,eol,start         " Allow backspacing over everything in insert mode
 set diffopt+=vertical           " vertical diff
 
 " --- copying ---
 " set clipboard=unnamed  " yank to * instead of "
 " set guioptions+=a     " visual mode selection automatically copies to clipboard
 
-" gui options - remove exta, useless button bar.
-"set guioptions-=t
+" GUI options - remove exta, useless button bar.
+"set guioptions-=T
 "set guioptions+=t
 
 
-" editor settings {{{
+" Editor Settings {{{
     set number                      " show line numbers
     " set relativenumber              " show relative line numbers
     set scrolloff=7                 " lines of text around cursor when scrolling
@@ -134,7 +134,7 @@ set diffopt+=vertical           " vertical diff
     set wildignore +=.git,.gitkeep
     set wildignore +=.tmp
     set wildignore +=.coverage
-    set wildignore +=*ds_store*
+    set wildignore +=*DS_Store*
     set wildignore +=.sass-cache/
     set wildignore +=__pycache__/
     set wildignore +=.webassets-cache/
@@ -149,18 +149,18 @@ set diffopt+=vertical           " vertical diff
     set wildignore +=.coverage/**
     set wildignore +=*.egg,*.egg-info
     set wildignore +=*.png,*.jpg,*.gif
-    set wildignore +=*.so,*.swp,*.zip,*/.trash/**,*.pdf,*.dmg,*/library/**,*/.rbenv/**
+    set wildignore +=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
     set wildignore +=*/.nx/**,*.app
     set wildignore +=*.class,*.rbc
-    set wildignore +=.hg,.git,.svn                    " version control
-    set wildignore +=*.aux,*.out,*.toc                " latex intermediate files
+    set wildignore +=.hg,.git,.svn                    " Version control
+    set wildignore +=*.aux,*.out,*.toc                " LaTeX intermediate files
     set wildignore +=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
     set wildignore +=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
     set wildignore +=*.spl                            " compiled spelling word lists
-    set wildignore +=*.sw?                            " vim swap files
-    set wildignore +=*.ds_store                       " osx bullshit
-    set wildignore +=migrations                       " django migrations
-    set wildignore +=*.pyc                            " python byte code
+    set wildignore +=*.sw?                            " Vim swap files
+    set wildignore +=*.DS_Store                       " OSX bullshit
+    set wildignore +=migrations                       " Django migrations
+    set wildignore +=*.pyc                            " Python byte code
    
    
     " is the followed really needed ??
@@ -173,14 +173,14 @@ set diffopt+=vertical           " vertical diff
     set fileformats=unix,dos,mac     " file mode is unix
 " }}}
 
-" search settings {{{
+" Search Settings {{{
     set ignorecase                  " case insensitive searching
     set smartcase                   " but become case sensitive if you type uppercase characters
     set hlsearch                    " highlight search (very useful!)
     set incsearch                   " search incremently (search while typing)
 " }}}
 
-" tab control settings {{{
+" Tab Control Settings {{{
     set expandtab                   " turn a tabs into spaces
     set smarttab                    " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
     set tabstop=4                   " the visible width of tabs
@@ -189,7 +189,7 @@ set diffopt+=vertical           " vertical diff
     set shiftround                  " round indent to a multiple of 'shiftwidth'
 " }}}
 
-" wrap settings {{{
+" Wrap Settings {{{
     set wrap                        " turn on line wrapping
     set linebreak                   " set soft wrapping
     "set colorcolumn=120             " vim to color column 120  
@@ -207,17 +207,17 @@ set diffopt+=vertical           " vertical diff
     " nnoremap <silent> k gk
     " nnoremap <silent> ^ g^
     " nnoremap <silent> $ g$
-    " map <c-up> g<up>
-    " map <c-down> g<down>
-    " imap <c-up> <c-[> g<up> i
-    " imap <c-down> <c-[> g<down> i
+    " map <C-Up> g<Up>
+    " map <C-Down> g<Down>
+    " imap <C-Up> <C-[> g<Up> i
+    " imap <C-Down> <C-[> g<Down> i
 " }}}
 
 "set completeopt+=longest      " keep it disabled for now until supertab is tested
 "set completeopt=longest,menu,preview      " keep it disabled for now until supertab is tested
 "?? above??
 
-" code folding settings {{{
+" Code Folding Settings {{{
     set foldmethod=syntax       " fold based on indent
     set foldnestmax=10          " deepest fold is 10 levels
     set nofoldenable            " don't fold by default
@@ -225,12 +225,12 @@ set diffopt+=vertical           " vertical diff
     "set foldlevelstart=20      " max. technically possible value for improved folding
 " }}}
 
-" use of the filetype plugins, auto completion and indentation support
+" Use of the filetype plugins, auto completion and indentation support
 filetype plugin indent on
 
-" pending experiments {{{
+" Pending Experiments {{{
     " this plugin not yet loaded in plugin file - test it later
-    " let g:vlh_repository_dir = "/users/yadvika/.vim/localhistory"
+    " let g:vlh_repository_dir = "/Users/yadvika/.vim/localhistory"
 " }}}
 
 let g:python_host_prog = '/usr/local/bin/python'
@@ -238,11 +238,11 @@ let mapleader = "\\"
 let maplocalleader = ","
 
 " add ~/.vim directory to rtp
-let &runtimepath.=','.vimdir
+let &runtimepath.=','.vimDir
 source ~/.vim/custom/vim-abbr.vim
 source ~/.vim/custom/vim-plugins.vim
 
-" remap whitespace listchars {{{
+" Remap whitespace listchars {{{
     set list
     "set listchars=tab:▸\ ,extends:❯,precedes:❮,nbsp:␣
     set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
@@ -251,19 +251,19 @@ source ~/.vim/custom/vim-plugins.vim
     " set showbreak=…             " show ellipsis at breaking
 " }}}
 
-" custom shortcuts {{{
-  " convenient mapping : recursive map space to leader
+" Custom Shortcuts {{{
+  " Convenient Mapping : recursive map space to leader
   " my leader is \ above and localleader is ,
   " localleader is , which is easy - no further remap needed
   map <space> <leader>
 
   " fast esc map - from ii
   " press i to enter insert mode, ii to exit
-  imap ii <esc>
+  imap ii <Esc>
   
   " conflict with control-space
-  " nnoremap <c-space> i
-  " <c-space> <esc>
+  " nnoremap <C-Space> i
+  " <C-Space> <Esc>
   
   " try ; to :
   noremap ; :
@@ -274,9 +274,9 @@ source ~/.vim/custom/vim-plugins.vim
   nnoremap <leader>, :w<cr>
   
   " from vim-sensible
-  " " ctrl-u in insert mode deletes a lot.  use ctrl-g u to first break undo,
-  " " so that you can undo ctrl-u after inserting a line break.
-  " inoremap <c-u> <c-g>u<c-u>
+  " " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+  " " so that you can undo CTRL-U after inserting a line break.
+  " inoremap <C-U> <C-G>u<C-U>
 
   " wipeout buffer
   nnoremap <silent> <leader>b :bw<cr>
@@ -294,9 +294,9 @@ source ~/.vim/custom/vim-plugins.vim
   " clear highlighted search
   noremap <leader>h :set hlsearch! hlsearch?<cr>
   
-  " --- remove highlights via <esc> ---
+  " --- remove highlights via <Esc> ---
   " remapped already - need to fix it
-  " nnoremap <esc> :noh<cr><esc>
+  " nnoremap <Esc> :noh<CR><Esc>
   
   " not working for me
   " activate spell-checking alternatives
@@ -310,18 +310,18 @@ source ~/.vim/custom/vim-plugins.vim
   
   nmap <leader>l :set list!<cr>
   
-  " textmate style indentation
+  " Textmate style indentation
   vmap <leader>[ <gv
   vmap <leader>] >gv
   nmap <leader>[ <<
   nmap <leader>] >>
   
-  " --- indenting stuff: use tab and/or > ---
+  " --- indenting stuff: use Tab and/or > ---
   " (highlighting single characters, too hard to fix, so what)
   " vnoremap > >gv
   " vnoremap < <gv
-  " vmap <tab> >
-  " vmap <s-tab> <
+  " vmap <Tab> >
+  " vmap <S-Tab> <
   
   " switch between current and last buffer
   nmap <leader>. <c-^>
@@ -330,199 +330,199 @@ source ~/.vim/custom/vim-plugins.vim
   vnoremap . :normal .<cr>
  
   " this will sorted out later - conflicts with tmux
-  " map <silent> <leader><c-h> :call functions#winmove('h')<cr>
-  " map <silent> <leader><c-j> :call functions#winmove('j')<cr>
-  " map <silent> <leader><c-k> :call functions#winmove('k')<cr>
-  " map <silent> <leader><c-l> :call functions#winmove('l')<cr>
-  " inoremap <tab> <c-r>=smart_tabcomplete()<cr>
-  " map <leader>r :call runcustomcommand()<cr>
+  " map <silent> <leader><C-h> :call functions#WinMove('h')<cr>
+  " map <silent> <leader><C-j> :call functions#WinMove('j')<cr>
+  " map <silent> <leader><C-k> :call functions#WinMove('k')<cr>
+  " map <silent> <leader><C-l> :call functions#WinMove('l')<cr>
+  " inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+  " map <leader>r :call RunCustomCommand()<cr>
   " let g:silent_custom_command = 0
   
   " toggle cursor line
   nnoremap <leader>i :set cursorline!<cr>
   
   " scroll the viewport faster
-  nnoremap <c-e> 3<c-e>
-  nnoremap <c-y> 3<c-y>
+  nnoremap <C-e> 3<C-e>
+  nnoremap <C-y> 3<C-y>
   
   " search for word under the cursor
   nnoremap <leader>/ "fyiw :/<c-r>f<cr>
   
-  " convenient command to see the difference between the current buffer and the
+  " Convenient command to see the difference between the current buffer and the
   " file it was loaded from, thus the changes you made.
-  " only define it when not defined already.
-  " if !exists(":difforig")
-  "  command difforig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+  " Only define it when not defined already.
+  " if !exists(":DiffOrig")
+  "  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
   " endif
 
-  " tab related
+  " Tab Related
   " map -> n,v,o (normal, visual+select, operator)
   " map! -> i, c (insert and command-line)
   " http://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
-  " map <leader>( <esc>:tabprevious<cr>
-  " map <leader>) <esc>:tabnext<cr>
-  " map <leader>t <esc>:tabnew<cr>
-  " nmap <leader>( :tabprevious<cr>
-  " nmap <leader>) :tabnext<cr>
-  " nmap <leader>t :tabnew<cr>
-  "imap <leader>t <esc>:tabnew<cr>
+  " map <leader>( <Esc>:tabprevious<CR>
+  " map <leader>) <Esc>:tabnext<CR>
+  " map <leader>t <Esc>:tabnew<CR>
+  " nmap <leader>( :tabprevious<CR>
+  " nmap <leader>) :tabnext<CR>
+  " nmap <leader>t :tabnew<CR>
+  "imap <leader>t <Esc>:tabnew<CR>
 " }}}
 
-" pane management {{{
-  " open new split panes to right and bottom, which feels more natural than vim’s default:
+" Pane Management {{{
+  " Open new split panes to right and bottom, which feels more natural than Vim’s default:
   set splitbelow
   set splitright
-  " nnoremap <c-n> :bnext<cr>
+  " nnoremap <C-n> :bnext<CR>
 " }}}
 
-" custom autogroups {{{
+" Custom AutoGroups {{{
   " #1 markdown solution
-  " marked 2 - works well but $14
-  function! s:setupmarkup()
-    nnoremap <buffer> <localleader>mpre :w<cr>:silent! !open -a 'marked 2.app' '%:p' &<cr>:redraw!<cr>
+  " Marked 2 - works well but $14
+  function! s:setupMarkup()
+    nnoremap <buffer> <localleader>mpre :w<cr>:silent! !open -a 'Marked 2.app' '%:p' &<cr>:redraw!<cr>
   endfunction
   " #********2 markdown solution with special chrome extension
   " works well with css and autoload - free
-  function! s:setupchromemarkup()
-    nnoremap <buffer> <localleader>cpre :w<cr>:silent! !open -a '/applications/google chrome.app/contents/macos/google chrome' '%:p' &<cr>:redraw!<cr>
-    "au filetype markdown noremap <buffer> <localleader>cpre :w<cr>:silent! !chrome %:p &<cr>:redraw!<cr>
+  function! s:setupChromeMarkup()
+    nnoremap <buffer> <localleader>cpre :w<cr>:silent! !open -a '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' '%:p' &<cr>:redraw!<cr>
+    "au FileType markdown noremap <buffer> <localleader>cpre :w<cr>:silent! !chrome %:p &<cr>:redraw!<CR>
   endfunction
-  " #3 markdown solution with macdown
-  " css but no autoreload. waiting for improvement.
-  function! s:setupmacdownmarkup()
-    nnoremap <buffer> <localleader>pre :w<cr>:silent! !open -a macdown '%:p' > /dev/null &<cr>:redraw!<cr>
+  " #3 markdown solution with MacDown
+  " CSS but no autoreload. Waiting for improvement.
+  function! s:setupMacDownMarkup()
+    nnoremap <buffer> <localleader>pre :w<cr>:silent! !open -a MacDown '%:p' > /dev/null &<cr>:redraw!<cr>
   endfunction
-  " #4 markdown solution with macoff
-  " css not well. but good autoreload. waiting for improvement.
-  function! s:setupmacoffmarkup()
-    nnoremap <buffer> <localleader>opre :w<cr>:silent! !open -a macoff '%:p' > /dev/null &<cr>:redraw!<cr>
+  " #4 markdown solution with MacOff
+  " CSS not well. but good autoreload. Waiting for improvement.
+  function! s:setupMacOffMarkup()
+    nnoremap <buffer> <localleader>opre :w<cr>:silent! !open -a MacOff '%:p' > /dev/null &<cr>:redraw!<cr>
   endfunction
   " #*******5 vim-markdown-preview with pandoc
   " my changes. worked with css and autosave
-  " see bufwritepost hook below
+  " see BufWritePost hook below
   " with let vim_markdown_preview_toggle=2
   " #6 - atom markdown preview plus.
-  " copy paste does not work with this. whole html format get coppied.
-  " from thkeep the file open in atom and c-s-m to open preview in a tab.
-  " this has css and autoread. separate app and works well.
-  " markdown highlighting {{{
-    au bufnewfile,bufread,bufwrite *.md syntax match comment /\%^---\_.\{-}---$/
-    " au filetype markdown setlocal textwidth=100
-    " open markdown files with chrome.
-    au filetype markdown call s:setupmacdownmarkup() 
-    au filetype markdown call s:setupmacoffmarkup() 
-    au filetype markdown call s:setupchromemarkup() 
-    au filetype markdown call s:setupmarkup()
+  " COPY PASTE does not work with this. whole html format get coppied.
+  " from thkeep the file open in atom and C-s-m to open preview in a tab.
+  " this has css and autoread. Separate app and works well.
+  " Markdown highlighting {{{
+    au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
+    " au FileType markdown setlocal textwidth=100
+    " Open markdown files with Chrome.
+    au FileType markdown call s:setupMacDownMarkup() 
+    au FileType markdown call s:setupMacOffMarkup() 
+    au FileType markdown call s:setupChromeMarkup() 
+    au FileType markdown call s:setupMarkup()
   " }}}
-  " diff highlighting {{{
-    " augroup patchdiffhighlight
+  " Diff highlighting {{{
+    " augroup PatchDiffHighlight
     "     autocmd!
-    "     autocmd bufenter *.patch,*.rej,*.diff syntax enable
-    " augroup end
+    "     autocmd BufEnter *.patch,*.rej,*.diff syntax enable
+    " augroup END
     " or
     "filetype on
-    "augroup patchdiffhighlight
+    "augroup PatchDiffHighlight
         " autocmd!
-        " autocmd filetype diff syntax enable
-    " augroup end
+        " autocmd FileType diff syntax enable
+    " augroup END
   " }}}
-  " auto pane resizing {{{
-    augroup resizepanebuffers
+  " Auto Pane Resizing {{{
+    augroup ResizePaneBuffers
         autocmd!
         " automatically resize panes on resize
-        autocmd vimresized * wincmd =
+        autocmd VimResized * wincmd =
         
-    augroup end
+    augroup END
   " }}}
-  " autosave on focus events {{{
-    augroup autosavebuffers
+  " Autosave on Focus Events {{{
+    augroup AutoSaveBuffers
       autocmd!
       " save all files on focus lost, ignoring warnings about untitled buffers
-      "----autocmd focuslost * silent! :wa
-      " autocmd focuslost * :set invrelativenumber 
-    augroup end
+      "----autocmd FocusLost * silent! :wa
+      " autocmd FocusLost * :set invrelativenumber 
+    augroup END
   " }}}
-  " last location restore {{{
-    augroup lastlocation
+  " Last Location Restore {{{
+    augroup LastLocation
       autocmd!
-      " when editing a file, always jump to the last known cursor position.
-      autocmd bufreadpost *
+      " When editing a file, always jump to the last known cursor position.
+      autocmd BufReadPost *
         \ if line("'\"") > 1 && line("'\"") <= line("$") |
         \   exe "normal! g`\"" |
         \ endif
-    augroup end
+    augroup END
   " }}}
-  " auto config reload {{{
-    augroup configfiles
+  " Auto Config Reload {{{
+    augroup ConfigFiles
       autocmd!
       " for later
-      " autocmd bufwritepost .vimrc,.vimrc.local,init.vim source %
-    augroup end
+      " autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
+    augroup END
   " }}}
-  " auto filetype config {{{
-    augroup filetypeauto 
+  " Auto FileType Config {{{
+    augroup FileTypeAuto 
       autocmd!
       " make quickfix windows take all the lower section of the screen
       " when there are multiple windows open
-      autocmd filetype qf wincmd j
-      " for all plain text files set 'textwidth' to 78 characters.
-      autocmd filetype text setlocal textwidth=78
+      autocmd FileType qf wincmd J
+      " For all plain text files set 'textwidth' to 78 characters.
+      autocmd FileType text setlocal textwidth=78
       
       " --- highlight settings ---
-      autocmd insertleave * set nocul   " highlight current line when in insert mode
-      autocmd insertenter * set cul     " unhighlight current line when not in insert mode
+      autocmd InsertLeave * set nocul   " highlight current line when in insert mode
+      autocmd InsertEnter * set cul     " unhighlight current line when not in insert mode
       
       " --- don't auto-complete comments ---
-      " autocmd filetype * setlocal fo-=cro
+      " autocmd FileType * setlocal fo-=cro
       
       " --- code folding ---
       " auto-define folds but unfold them on startup
-      "autocmd syntax * setlocal foldmethod=syntax
-      "autocmd syntax * normal zr
-      " code folding via space when the file has folds
-      "autocmd syntax * nnoremap <silent> <space> @=(foldlevel('.')?'za':'l')<cr>
+      "autocmd Syntax * setlocal foldmethod=syntax
+      "autocmd Syntax * normal zR
+      " code folding via Space when the file has folds
+      "autocmd Syntax * nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
       " --- no wrapping for all but plain text files ---
-      " autocmd syntax * setlocal nowrap
+      " autocmd Syntax * setlocal nowrap
       
-      " --- no auto-indentation for html files ---
-      autocmd filetype html set noautoindent indentexpr=
-    augroup end
+      " --- no auto-indentation for HTML files ---
+      autocmd FileType html set noautoindent indentexpr=
+    augroup END
   " }}}
-  " auto newfile config {{{
+  " Auto NewFile Config {{{
     " augroup newfile 
     "   au!
-    "   autocmd bufnewfile            *.html  0r      ~/templates/html4.html
-    "   autocmd bufnewfile            *.xhtml 0r      ~/templates/xhtml.xhtml
-    "   autocmd bufnewfile            *.c     0r      ~/templates/c.c
-    "   autocmd bufnewfile            *.py    0r      ~/templates/python.py
-    "   autocmd bufnewfile            *.js    0r      ~/templates/javascript.js
-    "   autocmd bufnewfile            *.txt   0r      ~/templates/rst.rst
-    "   autocmd bufnewfile            *.rst   0r      ~/templates/rst.rst
-    " augroup end
+    "   autocmd BufNewFile            *.html  0r      ~/Templates/HTML4.html
+    "   autocmd BufNewFile            *.xhtml 0r      ~/Templates/XHTML.xhtml
+    "   autocmd BufNewFile            *.c     0r      ~/Templates/C.c
+    "   autocmd BufNewFile            *.py    0r      ~/Templates/Python.py
+    "   autocmd BufNewFile            *.js    0r      ~/Templates/Javascript.js
+    "   autocmd BufNewFile            *.txt   0r      ~/Templates/RST.rst
+    "   autocmd BufNewFile            *.rst   0r      ~/Templates/RST.rst
+    " augroup END
   " }}}
 " }}}
 
-" custom settings for plugins {{{
-" indentline {{{
+" Custom Settings for Plugins {{{
+" IndentLine {{{
   " vertical line indentation
-  let g:indentline_color_term = 239
-  let g:indentline_color_gui = '#09aa08'
-  let g:indentline_char = '│'
+  let g:indentLine_color_term = 239
+  let g:indentLine_color_gui = '#09AA08'
+  let g:indentLine_char = '│'
 " }}}
-" autopair {{{
+" AutoPair {{{
   " vertical line indentation
-  let g:autopairsmapspace = 0
+  let g:AutoPairsMapSpace = 0
 " }}}
-" eclim {{{
-  "let g:eclimfiletypevalidate = 0
+" Eclim {{{
+  "let g:EclimFileTypeValidate = 0
   "
   "
-  "http://valloric.github.io/youcompleteme/  - search eclim on this page
-  let g:eclimcompletionmethod = 'omnifunc'
+  "http://valloric.github.io/YouCompleteMe/  - search eclim on this page
+  let g:EclimCompletionMethod = 'omnifunc'
   " following http://eclim.org/gettingstarted.html
   " to create first empty project
-  " :projectcreate /users/yadvika/eclimprojects/myfirstproject -n java
-  " :projectlist
+  " :ProjectCreate /Users/yadvika/EclimProjects/MyFirstProject -n java
+  " :ProjectList
   "
   " http://stackoverflow.com/questions/34762391/eclim-classpath-commands-newsrcentry-not-recognized
   " https://github.com/ervandew/eclim/issues/433
@@ -530,17 +530,17 @@ source ~/.vim/custom/vim-plugins.vim
   " when i followed this it worked just fine: following http://eclim.org/gettingstarted.html
   " 
 " }}}
-" unimpaired {{{
+" Unimpaired {{{
   " types :help unimpaired
   "
-  " full set of 20 mappings and mnemonics. all of them take a count.
+  " full set of 20 mappings and mnemonics. All of them take a count.
   " ]q is :cnext.
   " [q is :cprevious.
   " ]a is :next.
   " [b is :bprevious. 
 
   " linewise mappings.
-  " [<space> and ]<space> add newlines before and after the cursor line.
+  " [<Space> and ]<Space> add newlines before and after the cursor line.
   " [e and ]e exchange the current line with the one above or below it.
 
   " toggling options mappings
@@ -549,204 +549,204 @@ source ~/.vim/custom/vim-plugins.vim
   " and several others, plus mappings to help alleviate the set paste dance.
 
   " mappings for encoding and decoding. 
-  " [x and ]x encode and decode xml (and html).
-  " [u and ]u encode and decode urls.
-  " [y and ]y do c string style escaping.
+  " [x and ]x encode and decode XML (and HTML).
+  " [u and ]u encode and decode URLs.
+  " [y and ]y do C String style escaping.
 
   " miscellaneous category, there's
   " [f and ]f to go to the next/previous file in the directory, 
-  " and [n and ]n to jump between scm conflict markers.
+  " and [n and ]n to jump between SCM conflict markers.
 
-  " the . command works with all operator mappings, and will work with
+  " The . command works with all operator mappings, and will work with
   " the linewise mappings as well (with repeat.vim installed).
 " }}} 
-" gundo {{{
-  nmap <leader>gu :gundotoggle<cr>
+" Gundo {{{
+  nmap <leader>gu :GundoToggle<CR>
 " }}}
-" vim markdown preview {{{
-  let vim_markdown_preview_hotkey='<c-m>'
-  let vim_markdown_preview_browser='google chrome'
+" Vim Markdown Preview {{{
+  let vim_markdown_preview_hotkey='<C-m>'
+  let vim_markdown_preview_browser='Google Chrome'
   let vim_markdown_preview_pandoc=1
-  let vim_markdown_preview_pandoc_css_theme='solarizeddark'
+  let vim_markdown_preview_pandoc_css_theme='SolarizedDark'
   let vim_markdown_preview_toggle=3
   " not good rendering 
 " }}}
-" vim instant markdown {{{
+" Vim Instant Markdown {{{
   let g:instant_markdown_autostart = 0
-  " explicitly do :instantmarkdownpreview
+  " explicitly do :InstantMarkdownPreview
 " }}}
-" goyo {{{
-  nmap <leader>goy :goyo<cr>
+" Goyo {{{
+  nmap <leader>goy :Goyo<CR>
 " }}}
-" bookmarks {{{
+" Bookmarks {{{
   let g:bookmark_no_default_key_mappings = 1
 " }}}
-" markdown tpope {{{
+" Markdown Tpope {{{
   let g:markdown_fenced_languages = ['javascript', 'ruby', 'sh', 'yaml', 'javascript', 'html', 'vim', 'coffee', 'json', 'diff', 'java']
 " }}}
-" nerdtree {{{
-  let nerdtreeshowhidden=1
-  let nerdtreedirarrowexpandable = '▷'
-  let nerdtreedirarrowcollapsible = '▼'
+" NERDTree {{{
+  let NERDTreeShowHidden=1
+  let NERDTreeDirArrowExpandable = '▷'
+  let NERDTreeDirArrowCollapsible = '▼'
 
-  " toggle nerdtree
-  " nmap <silent> <leader>k :nerdtreetoggle<cr>
+  " Toggle NERDTree
+  " nmap <silent> <leader>k :NERDTreeToggle<cr>
   " expand to the path of the file in the current buffer
-  " nmap <silent> <leader>y :nerdtreefind<cr>
+  " nmap <silent> <leader>y :NERDTreeFind<cr>
 " }}} 
-" tabman {{{
-  "<leader>mt or run :tmtoggle to toggle tabman.
-  "<leader>mf or run :tmfocus to give focus to/open the tabman window.
+" Tabman {{{
+  "<leader>mt or run :TMToggle to toggle TabMan.
+  "<leader>mf or run :TMFocus to give focus to/open the TabMan window.
 " }}}
-" ultisnips {{{
+" Ultisnips {{{
   "
 " }}} 
-" ctrlp {{{
+" CtrlP {{{
   " easyclip has taken c-p. use c-t for ctrlp.
   let g:ctrlp_map = '<c-t>'
-  let g:ctrlp_cmd = 'ctrlp'
+  let g:ctrlp_cmd = 'CtrlP'
   let g:ctrlp_clear_cache_on_exit = 0
 " }}} 
-" fzf {{{
+" FZF {{{
   " refer docs and source for options
   let g:fzf_layout = { 'down': '~25%' }
 
   if isdirectory(".git")
-      " if in a git project, use :gfiles
-      " nmap <silent> <leader>t :gfiles<cr>
+      " if in a git project, use :GFiles
+      " nmap <silent> <leader>t :GFiles<cr>
   else
-      " otherwise, use :fzf
-      " nmap <silent> <leader>t :fzf<cr>
+      " otherwise, use :FZF
+      " nmap <silent> <leader>t :FZF<cr>
   endif
 
-  " nmap <silent> <leader>r :buffers<cr>
-  " nmap <silent> <leader>e :fzf<cr>
+  " nmap <silent> <leader>r :Buffers<cr>
+  " nmap <silent> <leader>e :FZF<cr>
   " nmap <leader><tab> <plug>(fzf-maps-n)
   " xmap <leader><tab> <plug>(fzf-maps-x)
   " omap <leader><tab> <plug>(fzf-maps-o)
 
-  " insert mode completion
+  " Insert mode completion
   " imap <c-x><c-k> <plug>(fzf-complete-word)
   " imap <c-x><c-f> <plug>(fzf-complete-path)
   " imap <c-x><c-j> <plug>(fzf-complete-file-ag)
   " imap <c-x><c-l> <plug>(fzf-complete-line)
 
-  " nnoremap <silent> <leader>c :call fzf#run({
+  " nnoremap <silent> <Leader>C :call fzf#run({
   " \   'source':
   " \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
   " \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
   " \   'sink':    'colo',
   " \   'options': '+m',
   " \   'left':    30
-  " \ })<cr>
+  " \ })<CR>
 
-  " command! fzfmru call fzf#run({
+  " command! FZFMru call fzf#run({
   " \  'source':  v:oldfiles,
   " \  'sink':    'e',
   " \  'options': '-m -x +s',
   " \  'down':    '40%'})
 
 " }}}
-" fugitive {{{
-  nmap <silent> <leader>gs :gss<cr>
-  nmap <leader>ge :gedit<cr>
-  nmap <silent><leader>gr :gread<cr>
-  nmap <silent><leader>gb :gblame<cr>
+" Fugitive {{{
+  nmap <silent> <leader>gs :Gss<cr>
+  nmap <leader>ge :Gedit<cr>
+  nmap <silent><leader>gr :Gread<cr>
+  nmap <silent><leader>gb :Gblame<cr>
 " }}}
-" vim-json {{{
+" Vim-Json {{{
   " don't hide quotes in json files
   let g:vim_json_syntax_conceal = 0
 " }}}
-" supertab - {{{
-  " is this needed before plugin init? 
-  let g:supertabcrmapping = 0
+" SuperTab - {{{
+  " Is this needed before plugin init? 
+  let g:SuperTabCrMapping = 0
 " }}}
-" hyperterm and iterm2 focus gain/lossmanagement {{{
+" HyperTerm and iTerm2 Focus Gain/LossManagement {{{
   let g:vitality_always_assume_iterm = 1
 " }}}
-" number display toggle {{{
-  function! numbertoggle()
+" Number Display Toggle {{{
+  function! NumberToggle()
     if(&relativenumber == 1)
       set number
     else
       set relativenumber
     endif
   endfunc
-  nnoremap <leader>nu :call numbertoggle()<cr>
-  " augroup autonumbering
+  nnoremap <leader>nu :call NumberToggle()<cr>
+  " augroup AutoNumbering
   "     autocmd!
-  "     autocmd focuslost * :set number
-  "     autocmd focusgained * :set relativenumber
-  "     autocmd insertenter * :set number
-  "     autocmd insertleave * :set relativenumber
-  " augroup end
+  "     autocmd FocusLost * :set number
+  "     autocmd FocusGained * :set relativenumber
+  "     autocmd InsertEnter * :set number
+  "     autocmd InsertLeave * :set relativenumber
+  " augroup END
 " }}}
-" vim easy clip - remap gm to m {{{
+" Vim Easy Clip - Remap gm to m {{{
   nnoremap gm m
 " }}}
-" tmux navigation with my clip solution {{{
-  " now my new registercopytotmux is not being used.
-  " i used vim8,nvim timer to delay focusgained event for vim_tmux_clipboard by
-  " 50 ms. this makes sure the race condition is solved and two vim sessions
+" Tmux Navigation with my clip solution {{{
+  " now my new RegisterCopyToTMux is not being used.
+  " I used vim8,nvim timer to delay FocusGained event for vim_tmux_clipboard by
+  " 50 ms. This makes sure the race condition is solved and two vim sessions
   " side by side can behave as if sharing same session.
   "
-  " a hot-key to enable-disable vim-tmux copy back and forth.
+  " A hot-key to enable-disable vim-tmux copy back and forth.
   "
-  noremap <leader>tmux :vimtmuxtoggle<cr>
+  noremap <leader>tmux :VimTmuxToggle<cr>
   " tmux settings
-  " c-a c-c to copy tmux saved buffer to clipboard
-  " c-a c-v for paste from system clipboard
-  " c-a ] for paste from system clipboard.
+  " C-a C-c to copy tmux saved buffer to clipboard
+  " C-a C-v for paste from system clipboard
+  " C-a ] for paste from system clipboard.
   "
-  " vim focusgain/loss will copy into out of vim @" register to 
-  " tmux clipboard.
+  " vim FocusGain/Loss will copy into out of vim @" register to 
+  " tmux Clipboard.
   " use above hotkey to disable this automatic copy."
   "  my tmux setting are copy into system clipboard.
   "
   "  tmux list-keys -t vi-copy | egrep 'pbcopy|paste|load'
-  " bind-key -t vi-copy             enter copy-pipe "pbcopy"
+  " bind-key -t vi-copy             Enter copy-pipe "pbcopy"
   " bind-key -t vi-copy                 ! copy-pipe "tr -d '\n' | pbcopy"
-  " bind-key -t vi-copy                 y copy-pipe "tmux paste-buffer"
+  " bind-key -t vi-copy                 Y copy-pipe "tmux paste-buffer"
   " bind-key -t vi-copy                 y copy-pipe "pbcopy"
-  " bind-key -t vi-copy mousedragend1pane copy-pipe "pbcopy"
-  " bind-key -t vi-copy               m-y copy-pipe "pbcopy; tmux paste-buffer"
+  " bind-key -t vi-copy MouseDragEnd1Pane copy-pipe "pbcopy"
+  " bind-key -t vi-copy               M-y copy-pipe "pbcopy; tmux paste-buffer"
   "
-  " in my case c-a p (and c-a y)  is only mapping which paste from tmux buffer
-  " other mapping are copyiing to and from system. wait a minute
+  " in my case C-a p (and C-a Y)  is only mapping which paste from tmux buffer
+  " other mapping are copyiing to and from system. WAIT A MINUTE
   " pbcopy does copy to both sysem clipboard and tmux buffer.
   "
-  " c-a c-c can help with moving non copied buffer to system (in case of vim
+  " C-a C-c can help with moving non copied buffer to system (in case of vim
   " editing)
   "
   " ! mapping in vi-copy mode copies non-empty lines to system clipboard.
   "
   "
-  " this one will stop my plugin for registercopytotmux to be disabled at
-  " starttime. this is only for my plugin in ~/.vim/plugin/...
+  " this one will stop my plugin for RegisterCopyToTMux to be disabled at
+  " starttime. This is only for my plugin in ~/.vim/plugin/...
   let g:vim_tmux_clip_disabled = 1"
   "  
   " let g:tmux_navigator_no_mappings = 1
-  " nnoremap <silent> <c-h> :registercopytotmux<cr> \| :tmuxnavigateleft<cr>
-  " nnoremap <silent> <c-j> :registercopytotmux<cr> \| :tmuxnavigatedown<cr>
-  " nnoremap <silent> <c-k> :registercopytotmux<cr> \| :tmuxnavigateup<cr>
-  " nnoremap <silent> <c-l> :registercopytotmux<cr> \| :tmuxnavigateright<cr>
-  " nnoremap <silent> <c-\> :registercopytotmux<cr> \| :tmuxnavigateprevious<cr>
-  " tmux-yank plugin
+  " nnoremap <silent> <c-h> :RegisterCopyToTMux<cr> \| :TmuxNavigateLeft<cr>
+  " nnoremap <silent> <c-j> :RegisterCopyToTMux<cr> \| :TmuxNavigateDown<cr>
+  " nnoremap <silent> <c-k> :RegisterCopyToTMux<cr> \| :TmuxNavigateUp<cr>
+  " nnoremap <silent> <c-l> :RegisterCopyToTMux<cr> \| :TmuxNavigateRight<cr>
+  " nnoremap <silent> <c-\> :RegisterCopyToTMux<cr> \| :TmuxNavigatePrevious<cr>
+  " Tmux-Yank plugin
   "
   " prefix + y for copy text from command line into clipboard
-  " prefix + y for cwd of pane into clipboard
+  " prefix + Y for cwd of pane into clipboard
   "
   " in copy-mode - just y for selection to clipboard.
-  " in copy-mode - just y paste selection to command prompt.
+  " in copy-mode - just Y paste selection to command prompt.
 " }}}
 " }}}
 
-" color, font and theme {{{
+" Color, Font and Theme {{{
   if &term =~ '256color'
       " turn these back on under tmux if needed
       " set t_ut=
       " in term it is 256 already. turn is back on if needed.
-      " set t_co=256
+      " set t_Co=256
   endif
 
   " powerline hook
@@ -754,7 +754,7 @@ source ~/.vim/custom/vim-plugins.vim
   python powerline_setup()
   python del powerline_setup
   set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
-  "set rtp+='$home/.vim/plugin/hammer.vim'
+  "set rtp+='$HOME/.vim/plugin/hammer.vim'
 
   " font
   if ( has('mac') )
