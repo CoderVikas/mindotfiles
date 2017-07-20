@@ -54,3 +54,16 @@ export LSCOLORS=gxfxcxdxbxegedabagaced
 if [ -f $HOME/bin ]; then
     export PATH="$HOME/bin:$PATH"
 fi
+
+# system
+command_exists() {
+    type "$1" > /dev/null 2>&1
+}
+
+if command_exists dircolors; then
+    test -r ~/.dircolors && evals "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
+if command_exists gdircolors; then
+    test -r ~/.dircolors && evals "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
+fi
+
