@@ -353,4 +353,5 @@ source ~/.vim/custom/vim-plugins-colors.vim
   "^Plug 'jeetsukumaran/vim-buffergator'
   "newMac Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 " }}}
+source ~/.vim/custom/vim-plugins-post-colors.vim
 call plug#end()
