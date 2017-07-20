@@ -25,6 +25,7 @@ MISCDIRS=(
     "$HOME/.tmux"
     "$HOME/.tmux/plugins"
     "$HOME/.ssh"
+    "$HOME/go/src/github.com/$USER"
     "$HOME/git-downloads"
     )
 echo "=============================="

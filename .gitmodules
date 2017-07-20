@@ -25,3 +25,18 @@
 [submodule "submodules/theme/solarized/intellij-colors-solarized"]
 	path = submodules/theme/solarized/intellij-colors-solarized
 	url = https://github.com/jkaving/intellij-colors-solarized
+[submodule "submodules/fonts"]
+	path = submodules/fonts
+	url = https://github.com/powerline/fonts
+[submodule "submodules/Menlo-for-Powerline"]
+	path = submodules/Menlo-for-Powerline
+	url = https://github.com/abertsch/Menlo-for-Powerline
+[submodule "submodules/zsh_custom.symlink/plugins/zsh-completions"]
+	path = submodules/zsh_custom.symlink/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
+[submodule "submodules/zsh_custom.symlink/plugins/zsh-syntax-highlighting"]
+	path = submodules/zsh_custom.symlink/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "submodules/gnome-terminal-colors-solarized"]
+	path = submodules/gnome-terminal-colors-solarized
+	url = https://github.com/Anthony25/gnome-terminal-colors-solarized

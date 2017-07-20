@@ -75,8 +75,8 @@ formulas=(
 	moreutils
 	zsh
 	z
-	zsh-completions
-	zsh-syntax-highlighting
+	#zsh-completions
+	#zsh-syntax-highlighting
 	'macvim --with-override-system-vim'
 	#tmux
 	#battery

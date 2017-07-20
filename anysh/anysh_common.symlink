@@ -21,7 +21,7 @@
 # By default no keys are loaded - until I do start* aliases
 # and enable those keys manually. Later I can disable these
 # from ssh-add (agent)
-ssh-add -l > /dev/null
+#ssh-add -l > /dev/null
 
 # Use Sublime Text as the default editor.
 #export EDITOR="subl -w"
@@ -51,3 +51,6 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 #export LSCOLORS=GxFxCxDxBxegedabagaced
 # Bold did not work. Trying non-bold version
 export LSCOLORS=gxfxcxdxbxegedabagaced
+if [ -f $HOME/bin ]; then
+    export PATH="$HOME/bin:$PATH"
+fi

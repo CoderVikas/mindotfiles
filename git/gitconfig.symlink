@@ -1,13 +1,14 @@
 # gitconfig
 [user]
 	name = Vikas Yadav
+	email = vikasyadav@gmail.com 
 [init]
     templatedir = ~/.dotfiles/git/templates
 [alias]
     # list all aliases
-	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
-	d = difftool
-	m = mergetool
+    dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+    d = difftool
+    m = mergetool
     la = "!git config -l | grep alias | cut -c 7-"
     delete-merged-branches = "!f() { git checkout --quiet master && git branch --merged | grep --invert-match '\\*' | xargs -n 1 git branch --delete; git checkout --quiet @{-1}; }; f"
     diff = diff --ignore-space-at-eol -b -w --ignore-blank-lines
@@ -118,7 +119,7 @@
     whitespace = cr-at-eol
 	# pager = less -FMRiX
     pager = less -FXRS -x2
-	excludesfile = /Users/yadav/.config/git/excludes
+	excludesfile = ~/.config/git/excludes
 [push]
 	# default = simple
     # push will only do the current branch, not all branches
@@ -137,7 +138,7 @@
     renames = copies
     mnemonicprefix = true
     compactionHeuristic = true
-	tool = vimdiff
+    tool = vimdiff
 [rerere]
     enabled = true
 [gitsh]
@@ -146,7 +147,7 @@
     extendRegexp = true
     lineNumber = true
 [difftool]
-	prompt = false
+    prompt = false
 [mergetool]
     prompt = false
     #[fugitive]
@@ -155,7 +156,7 @@
     # do not warn about missing whitespace at EOF
     whitespace = nowarn
 [rebase]
-	instructionFormat = "[%an - %ar] %s"
+    instructionFormat = "[%an - %ar] %s"
 [pager]
     diff = "diff-so-fancy | less --tabs=4 -RFX"
     show = "diff-so-fancy | less --tabs=4 -RFX"
