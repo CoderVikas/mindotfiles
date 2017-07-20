@@ -17,7 +17,7 @@
     let mybackupDir = expand(vimDir . '/vim-tmp/backup')
     let myswapDir = expand(vimDir . '/vim-tmp/swap')
     let mylocalhistDir = expand(vimDir . '/localhistory')
-    let myviminfodir = expand(vimdir . '/viminfo')
+    let myviminfodir = expand(vimDir . '/viminfo')
 
     " create dirs if not created already
     call system('mkdir -p ' . vimdir)
