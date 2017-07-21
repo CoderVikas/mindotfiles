@@ -1,6 +1,7 @@
 #### COLOUR
 
-tm_icon="🙊"
+if-shell 'test "$(uname)" = "Darwin"' tm_icon="🙊"
+if-shell 'test "$(uname)" = "Linux"' tm_icon="߷ ߷ ߷ "
 tm_color_active=colour51
 tm_color_inactive=colour241
 #tm_color_feature=colour198
@@ -53,9 +54,12 @@ set-window-option -g clock-mode-colour $tm_color_active
 tm_tunes="#[fg=$tm_color_music]#(osascript ~/.dotfiles/applescripts/tunes.scpt)"
 tm_battery="#(~/.dotfiles/bin/battery_indicator.sh)"
 
-tm_date="#[fg=$tm_color_inactive] %R %d %b"
+tm_date="#[fg=$tm_color_active] %R %d %b"
 tm_host="#[fg=$tm_color_feature,bold]#(cat ~/.box-name)"
 tm_session_name="#[fg=$tm_color_feature,bold]$tm_icon #S"
 
-set -g status-left $tm_session_name' '$tm_battery
-set -g status-right $tm_tunes' '$tm_date' '$tm_host
+
+if-shell 'test "$(uname)" = "Darwin"' set -g status-left $tm_session_name' '$tm_battery
+if-shell 'test "$(uname)" = "Linux"' set -g status-left $tm_session_name
+if-shell 'test "$(uname)" = "Darwin"' set -g status-right $tm_tunes' '$tm_date' '$tm_host
+if-shell 'test "$(uname)" = "Linux"' set -g status-right $tm_date' '$tm_host
