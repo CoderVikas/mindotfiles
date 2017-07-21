@@ -66,7 +66,8 @@ precmd() {
 }
 
 #export PROMPT='%(?.%F{205}.%F{red})⇨%f '
-export PROMPT='%(?.%F{205}.%F{red})⇨%f '
+#export PROMPT='%(?.%F{205}.%F{red})⇨%f '
+export PROMPT='%(?.%F{205}.%F{red})⋙  ♕ %f '
 export RPROMPT='`git_dirty`%F{241}$vcs_info_msg_0_%f `git_arrows``suspended_jobs`'
 # ∰   ⋙   ♕  ࠻  ࠺  ߷   Ш  Ø  Θ    Ξ   ॐ    ॏ   ॏ    िवका स   ᚙ   ᛞ  ᛝ  ᯼  ᯾  ※  ⁑  ⁂  ⁒  ⁕  ⇶  ∭  ⑆  ☔  ♋  ♨  ❄ 
 # ✰  ⫸  ⭆  

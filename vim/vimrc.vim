@@ -8,6 +8,8 @@
     set nocompatible              " vim-defaults better"
   endif
   set autoread                    " detect when a file is changed
+  au FocusGained,BufEnter * :silent! !
+  au FocusLost,WinLeave * :silent! w
 " }}}
 
 " Sensible Files, Directories and Histories {{{
@@ -19,13 +21,13 @@
     let mylocalhistDir = expand(vimDir . '/localhistory')
     let myviminfoDir = expand(vimDir . '/viminfo')
 
-    " Create dirs if not created already
-    call system('mkdir -p ' . vimDir)
-    call system('mkdir -p ' . myundoDir)
-    call system('mkdir -p ' . mybackupDir)
-    call system('mkdir -p ' . myswapDir)
-    call system('mkdir -p ' . mylocalhistDir)
-    call system('mkdir -p ' . myviminfoDir)
+    " " Create dirs if not created already
+    " call system('mkdir -p ' . vimDir)
+    " call system('mkdir -p ' . myundoDir)
+    " call system('mkdir -p ' . mybackupDir)
+    " call system('mkdir -p ' . myswapDir)
+    " call system('mkdir -p ' . mylocalhistDir)
+    " call system('mkdir -p ' . myviminfoDir)
 
     " simply backup and swaps
     set backup
@@ -70,12 +72,12 @@
     set termencoding=utf-8          " terminal encoding
     set lazyredraw                  " Don't update the display while executing macros
     if has('mouse')
-    set mouse=a
-    if has("mouse_sgr")
+      set mouse=a
+      if has("mouse_sgr")
         set ttymouse=sgr
-    else
+      else
         set ttymouse=xterm2
-    end
+      end
     end
     set title                       " set terminal title
     set laststatus=2                " always display the statusline in all windows using 2 lines
@@ -104,7 +106,7 @@ set diffopt+=vertical           " vertical diff
 
 " Editor Settings {{{
     set number                      " show line numbers
-    " set relativenumber              " show relative line numbers
+    set relativenumber              " show relative line numbers
     set scrolloff=7                 " lines of text around cursor when scrolling
     set showmatch                   " show matching bracket (briefly jump)
     set matchtime=3                 " how many tenths of a second to blink
@@ -233,7 +235,7 @@ filetype plugin indent on
     " let g:vlh_repository_dir = "/Users/yadvika/.vim/localhistory"
 " }}}
 
-let g:python_host_prog = '/usr/local/bin/python'
+let g:python_host_prog = '/usr/bin/python'
 let mapleader = "\\"
 let maplocalleader = ","
 
@@ -306,7 +308,7 @@ endif
   nmap ;s :set invspell spelllang=en<cr>
   
   " build
-  nmap <leader>bb :!buildbuild<cr>
+  nmap <leader>bzb :!buildbuild<cr>
   
   " remove extra whitespace
   nmap <leader>s :%s/\s\+$<cr>
@@ -757,6 +759,7 @@ endif
   python powerline_setup()
   python del powerline_setup
   set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
+  set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim
   "set rtp+='$HOME/.vim/plugin/hammer.vim'
 
   " font
@@ -790,8 +793,8 @@ endif
   highlight NonText ctermbg=none ctermfg=8
 
   " make comments italic
-  " let &t_ZH="\e[3m"
-  " let &t_ZR="\e[23m"
+  let &t_ZH="\e[3m"
+  let &t_ZR="\e[23m"
   highlight Comment cterm=italic
   highlight htmlArg cterm=italic
   highlight LineNr cterm=italic
@@ -1357,15 +1360,6 @@ let g:UltiSnipsEditSplit="vertical"
 "
 "
 "
-"
-"
-"
-"
-"
-"
-"
-"
-"
 " Sane Ignore For ctrlp
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|tmp$',
@@ -1407,7 +1401,6 @@ nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 " http://ellengummesson.com/blog/2015/08/01/dropping-ctrlp-and-other-vim-plugins/
 
-
 " Ack config
 "
 if executable('ag')
@@ -1417,5 +1410,3 @@ cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
 cnoreabbrev AG Ack
-
-

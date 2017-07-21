@@ -33,8 +33,8 @@ for dir in "${MISCDIRS[@]}"; do
     if [ ! -d $dir ]; then
         echo "Creating $dir"
 	    echo "mkdir -p $dir"
-        mkdir -p $dir 
-    else 
+        mkdir -p $dir
+    else
         echo "~${dir#$HOME} already exists... Skipping."
     fi
 done
@@ -109,5 +109,24 @@ for file in "${VIMFILES[@]}"; do
     else
         echo "Creating symlink for $KEY"
         ln -s ${VALUE} ${KEY}
+    fi
+done
+
+echo -e "\n\nmore vim directories"
+MISCDIRS=(
+    "$HOME/.vim/undodir"
+    "$HOME/.vim/vim-tmp/backup"
+    "$HOME/.vim/vim-tmp/swap"
+    "$HOME/.vim/localhistory"
+    "$HOME/.vim/viminfo"
+    )
+echo "=============================="
+for dir in "${MISCDIRS[@]}"; do
+    if [ ! -d $dir ]; then
+        echo "Creating $dir"
+	    echo "mkdir -p $dir"
+        mkdir -p $dir
+    else
+        echo "~${dir#$HOME} already exists... Skipping."
     fi
 done
