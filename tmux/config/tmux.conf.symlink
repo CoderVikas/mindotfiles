@@ -324,4 +324,5 @@ source ~/.tmux/config/tmux-plugins.conf
 # hyperterm sake
 #setw -g aggressive-resize off
 #set main-pane-width 160
-source ~/.tmux/config/theme.sh
+if-shell 'test "$(uname)" = "Darwin"' 'source ~/.tmux/config/theme.mac.sh'
+if-shell 'test "$(uname)" = "Linux"' 'source ~/.tmux/config/theme.linux.sh'
