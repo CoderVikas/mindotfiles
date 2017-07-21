@@ -241,6 +241,9 @@ let maplocalleader = ","
 let &runtimepath.=','.vimDir
 source ~/.vim/custom/vim-abbr.vim
 source ~/.vim/custom/vim-plugins.vim
+if !empty(glob("~/.vim-internal-plugs.vim"))
+  source ~/.vim-internal-plugs.vim
+endif
 
 " Remap whitespace listchars {{{
     set list

@@ -66,4 +66,4 @@ fi
 if command_exists gdircolors; then
     test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
 fi
-
+[ -f ~/.anysh_internal ] && source ~/.anysh_internal

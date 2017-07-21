@@ -285,3 +285,4 @@ if [ -d $HOME/homebrew ]; then
     export PATH="$HOME/homebrew/bin:$PATH"
     export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 fi
+[ -f ~/.zshrc_internal ] && source ~/.zshrc_internal

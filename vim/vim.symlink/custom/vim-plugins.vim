@@ -84,8 +84,8 @@ source ~/.vim/custom/vim-plugins-colors.vim
     " fuzzy searcher: fzf or controlspace or controlp
     " controlp is highly rated. so is fzf+ag combination.
     " install for shell and vim together 
-    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
-    " Plug 'junegunn/fzf.vim'                       " vim client
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
+    Plug 'junegunn/fzf.vim'                       " vim client
     
     
     " ctrlspace has some issues - when the window is opening - the focus lost
@@ -353,5 +353,8 @@ source ~/.vim/custom/vim-plugins-colors.vim
   "^Plug 'jeetsukumaran/vim-buffergator'
   "newMac Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 " }}}
+if !empty(glob("~/.vim-plugins-internal.vim"))
+  source ~/.vim-plugins-internal.vim
+endif
 source ~/.vim/custom/vim-plugins-post-colors.vim
 call plug#end()

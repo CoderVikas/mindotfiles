@@ -233,9 +233,9 @@ set-option -g repeat-time 1500
 unbind p
 # unbind ]
 bind p paste-buffer
-bind -t vi-copy 'v' begin-selection
-bind -t vi-copy 'r' rectangle-toggle
-# my 'y' is for copy to clipboard and tmux buffer
+
+if-shell 'test "$(uname)" = "Linux"'  'source ~/.tmux/config/tmux.linux.conf'
+if-shell 'test "$(uname)" = "Darwin"' 'source ~/.tmux/config/tmux.mac.conf'
 
 # to try - my 'y' and selection are same - this is another shortcut
 # to both but this work outside of copy mode as well
@@ -252,22 +252,8 @@ bind C-v run "pbpaste | tmux load-buffer - && tmux paste-buffer"
 unbind ]
 bind ] run "pbpaste | tmux load-buffer - && tmux paste-buffer"
 
-# my 'y' is already bound
-# also bind Enter
-# Update default binding of `Enter` to also use copy-pipe
-unbind -t vi-copy Enter
-bind-key -t vi-copy Enter copy-pipe "pbcopy"
-
-# lets try this also
-bind-key -t vi-copy MouseDragEnd1Pane copy-pipe "pbcopy"
-
 # nisi's
 bind-key -T root PPage if-shell -F "#{alternate_on}" "send-keys PPage" "copy-mode -e; send-keys PPage"
-bind-key -t vi-copy PPage page-up
-bind-key -t vi-copy NPage page-down
-
-bind-key -t vi-copy WheelUpPane halfpage-up
-bind-key -t vi-copy WheelDownPane halfpage-down
 
 # root binding - to try
 

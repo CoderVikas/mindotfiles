@@ -37,4 +37,5 @@ fi
 # Make bash check its window size after a process completes
 # shopt -s checkwinsize
 
+[ -f ~/.bashrc_internal ] && source ~/.bashrc_internal
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
