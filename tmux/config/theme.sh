@@ -1,7 +1,10 @@
 #### COLOUR
 
-if-shell 'test "$(uname)" = "Darwin"' tm_icon="🙊"
-if-shell 'test "$(uname)" = "Linux"' tm_icon="߷ ߷ ߷ "
+if [ "$(uname)" = "Darwin" ]; then
+    tm_icon="🙊"
+else
+    tm_icon="߷ ߷ ߷ "
+fi
 tm_color_active=colour51
 tm_color_inactive=colour241
 #tm_color_feature=colour198
@@ -59,7 +62,10 @@ tm_host="#[fg=$tm_color_feature,bold]#(cat ~/.box-name)"
 tm_session_name="#[fg=$tm_color_feature,bold]$tm_icon #S"
 
 
-if-shell 'test "$(uname)" = "Darwin"' set -g status-left $tm_session_name' '$tm_battery
-if-shell 'test "$(uname)" = "Linux"' set -g status-left $tm_session_name
-if-shell 'test "$(uname)" = "Darwin"' set -g status-right $tm_tunes' '$tm_date' '$tm_host
-if-shell 'test "$(uname)" = "Linux"' set -g status-right $tm_date' '$tm_host
+if [ "$(uname)" = "Darwin" ]; then
+    set -g status-left $tm_session_name' '$tm_battery
+    set -g status-right $tm_tunes' '$tm_date' '$tm_host
+else
+    set -g status-left $tm_session_name
+    set -g status-right $tm_date' '$tm_host
+fi
