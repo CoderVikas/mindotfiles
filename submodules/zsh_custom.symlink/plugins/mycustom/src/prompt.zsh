@@ -67,7 +67,11 @@ precmd() {
 
 #export PROMPT='%(?.%F{205}.%F{red})⇨%f '
 #export PROMPT='%(?.%F{205}.%F{red})⇨%f '
-export PROMPT='%(?.%F{205}.%F{red})⋙  ♕ %f '
+if [ "$(uname)" = "Linux" ]; then
+    export PROMPT='%(?.%F{205}.%F{red})⋙  ♕ %f '
+else
+    export PROMPT='%(?.%F{205}.%F{red})⇨%f '
+fi
 export RPROMPT='`git_dirty`%F{241}$vcs_info_msg_0_%f `git_arrows``suspended_jobs`'
 # ∰   ⋙   ♕  ࠻  ࠺  ߷   Ш  Ø  Θ    Ξ   ॐ    ॏ   ॏ    िवका स   ᚙ   ᛞ  ᛝ  ᯼  ᯾  ※  ⁑  ⁂  ⁒  ⁕  ⇶  ∭  ⑆  ☔  ♋  ♨  ❄ 
 # ✰  ⫸  ⭆  
